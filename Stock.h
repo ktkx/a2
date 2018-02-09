@@ -1,4 +1,6 @@
 // Stock.h
+#include <string>
+using namespace std;
 
 class Stock {
 	
@@ -15,3 +17,8 @@ class Stock {
 		// Date transactedDate;
 		
 };
+
+Stock::Stock() {
+
+}
+

@@ -1,6 +1,7 @@
 // UserList.h
-
 #include "User.h"
+#include <vector>
+using namespace std;
 
 class UserList {
 	
@@ -14,3 +15,4 @@ class UserList {
 		vector<User> users;
 		void lockAccount();
 };
+

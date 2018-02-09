@@ -1,5 +1,7 @@
 // StockList.h
 #include "Stock.h"
+#include <vector>
+using namespace std;
 
 class StockList {
 	
@@ -27,3 +29,4 @@ class StockList {
 	private:
 		vector<Stock> stocks;
 };
+
