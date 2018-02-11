@@ -5,9 +5,11 @@
 using namespace std;
 
 int displayMainMenu();
+void displayLogin();
 
 int main ()
 {
+	displayLogin();	   
 	displayMainMenu();
 }
 
@@ -17,13 +19,12 @@ int displayMainMenu()
 	do
 	{
 	cout << "Warehouse Management Tool" << endl << endl;
-	cout << "1. Login" << endl;
-	cout << "2. Add stock" << endl;
-	cout << "3. Remove stock" << endl;
-	cout << "4. Search stock" << endl;
-	cout << "5. Update stock" << endl;
-	cout << "6. Print report" << endl; 
-	cout << "7. Quit" << endl << endl;
+	cout << "1. Add stock" << endl;
+	cout << "2. Remove stock" << endl;
+	cout << "3. Search stock" << endl;
+	cout << "4. Update stock" << endl;
+	cout << "5. Print report" << endl; 
+	cout << "6. Quit" << endl << endl;
 	
 	cout << "Please enter your option : ";
 	cin >> option;
@@ -48,5 +49,19 @@ int displayMainMenu()
 	}
 	
 	}while(option != 7);
+}
+
+void displayLogin()
+{
+	string id;
+	string pass;
+	cout << "===================" << endl;
+	cout << "       Login       " << endl;
+	cout << "===================" << endl;
+	cout << "Enter username: " ;
+	cin >> id;
+	cout << "Enter password: ";
+	cin >> pass;
+	
 }
 
