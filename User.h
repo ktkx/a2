@@ -11,7 +11,6 @@ class User {
 	private:
 		string userID;
 		string pass;
-		
-	
+		bool locked;
 };
 
