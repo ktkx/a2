@@ -15,7 +15,15 @@ class Stock {
 		Stock();
 		
 		//assessor
-		
+		string getID();
+		string getDesc();
+		string getCat();
+		string getSubCat();
+		int getAmount();
+		int getQuantity();
+		Date getDate();
+
+
 		//mutator	 
 		void setID(string);
 		void setDesc(string);
@@ -29,15 +37,10 @@ class Stock {
 		string itemID;
 		string itemDescription;
 		string itemCategory;
-		string itemSubcategory;
+		string itemSubCategory;
 		int amount; 		// price
 		int quantity;
 		Date transactedDate;
 		
 };
-
-
-Stock::Stock() {
-
-}
 
