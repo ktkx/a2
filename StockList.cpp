@@ -61,7 +61,7 @@ void StockList::updateStock(Stock st, int index)
 void StockList::removeStock(string itemID)
 {
 	int index = 0;
-	for (vector<int>::iterator it = stocks.begin(); it != stocks.end(); ++it, ++index) {
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, ++index) {
 		if (itemID == *it.getID()) {
 			stocks.erase(it);
 		}
