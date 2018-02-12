@@ -3,37 +3,60 @@
 
 StockList::StockList()
 {
-
+	
 }
-void StockList::createNewRecord()
+
+void StockList::createNewRecord (Stock st)
 {
-
+	stocks.push_back (&st);
 }
 
-void StockList::manageStock()
+void StockList::displayStock(int index)
 {
-
+	cout << stocks[index].getID() << " : " 
+		<< stocks[index].getDesc() << " : " 
+		<< stocks[index].getCat() << " : " 
+		<< stocks[index].getSubCat() << " : " 
+		<< stocks[index].getAmount() << " : " 
+		<< stocks[index].getQuantity() << " : " 
+		<< stocks[index].getDate() << endl;
 }
-void StockList::displayStock()
-{
 
-}
 void StockList::provideStockAlerts()
 {
 
 }
 
-void StockList::addStock()
+void StockList::searchStockByCategory (string cat)
 {
-
+	for (int i = 0; i < stocks.size(); i++)
+	{
+		if (cat == stocks[i].getCat())
+			displayStock(i);
+	}
 }
-void StockList::searchStock()
-{
 
+void StockList::searchStockByPrice(int price)
+{
+	for (int i = 0; i < stocks.size(); i++)
+	{
+		if (price == stocks[i].getAmount())
+			displayStock(i);
+	}
 }
-void StockList::updateStock()
-{
 
+void StockList::searchStockByQuantity(int quantity)
+{
+	for (int i = 0; i < stocks.size(); i++)
+	{
+		if (quantity == stocks[i].getQuantity())
+			displayStock(i);
+	}
+}
+
+void StockList::updateStock(Stock st, int index)
+{
+	stocks[index] = &st;
 }
 void StockList::removeStock()
 {

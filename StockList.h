@@ -7,14 +7,11 @@ class StockList {
 	
 	public:
 		StockList();
-		void createNewRecord();
-		void manageStock();
+		void createNewRecord(Stock);
+		void updateStock();
 		void displayStock();
 		void provideStockAlerts();
-		
-		void addStock();
 		void searchStock();
-		void updateStock();
 		void removeStock();
 		
 		/*
