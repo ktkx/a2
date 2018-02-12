@@ -3,27 +3,24 @@
 #include "System.h"
 
 
-System::System() {
-	// read in file
-	// store in vectors?
+
+void System::run() {
+	
+	readFile();
+	for (vector<Stock>::iterator it = listOfStock.stocks.begin(); it != listOfStock.stocks.end(); ++it) {
+		(*it).displayStock();
+	}
+
+	cout << "sxdzd";
 }
 
-/*
-string itemID;
-		string itemDescription;
-		string itemCategory;
-		string itemSubCategory;
-		int amount; 		// price
-		int quantity;
-		Date transactedDate;
-*/
 
 
 void System::readFile() {
 	ifstream inFile;
-	string input;
+	string data;
 	string itemID, itemDescription, itemCategory, itemSubCategory, transactedDate;
-	int amount, quantity;
+	string amount, quantity, day, year;
 	Date date;
 	
 	vector<string> item;
@@ -34,7 +31,7 @@ void System::readFile() {
         exit(1);
     }
     
-    while (getline(inFile, input, '\n')) {
+    while (getline(inFile, data, '\n')) {
     	
     	/*
     	char* token;
@@ -60,18 +57,28 @@ void System::readFile() {
     	getline(ss, quantity, ':');
     	
     	// date stuff
-    	getline(ss, date.day, '-');
+    	getline(ss, day, '-');
     	getline(ss, date.month, '-');
-    	getline(ss, date.year, '\n');
+    	getline(ss, year, '\n');
+
+		date.day = atoi(day.c_str());
+		date.year =atoi(year.c_str());
+		
+
     	
-    	Stock s (itemID, itemDescription, itemCategory, itemSubCategory, amount, quantity, date);
+    	Stock s (itemID, itemDescription, itemCategory, itemSubCategory, atoi(amount.c_str()),atoi(quantity.c_str()), date);
     	listOfStock.createNewRecord(s);
     
+	}
+
 }
 
+
+	/*
 void System::encryptData() {
 	
 }
+
 void System::decryptData() {
 	
 }
@@ -88,3 +95,7 @@ int System::displayMainMenu() {
 void System::displayEditDetails() {
 	
 }
+*/
+
+
+

@@ -5,12 +5,6 @@ User::User()
 	locked = false;
 }
 
-User::User(string u,string p)
-{
-	userID = u;
-	pass = p;	 
-}
-
 /*	  	  
 void User::login()
 {

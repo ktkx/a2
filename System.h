@@ -1,7 +1,8 @@
 // System.h
+#pragma once
 
 #include "StockList.h"
-#include "UserList.h"
+//#include "UserList.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -11,7 +12,6 @@ using namespace std;
 class System {
 	
 	public:
-		System();
 		void readFile();
 		void encryptData();
 		void decryptData();
@@ -20,8 +20,11 @@ class System {
 		int displayMainMenu();
 		void displayEditDetails();
 		
+		void run();
+		
 	private:
 		StockList listOfStock;
-		UserList listOfUser;	
+		//UserList listOfUser;	
 };
+
 

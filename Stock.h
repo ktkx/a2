@@ -1,5 +1,7 @@
 // Stock.h
+#pragma once
 #include <string>
+#include <iostream>
 using namespace std;
 
 struct Date
@@ -22,7 +24,7 @@ class Stock {
 		int getAmount();
 		int getQuantity();
 		Date getDate();
-
+		void displayStock();
 
 		//mutator	 
 		void setID(string);
@@ -34,10 +36,10 @@ class Stock {
 		void setDate(Date);	   	   
 		
 		//sort
-		bool compareQuantity(const Stock&, const Stock&);
-		bool comparePrice(const Stock&, const Stock&);
-		bool compareCategory(const Stock&, const Stock&);
-		bool compareSubCategory(const Stock&, const Stock&);
+		static bool compareQuantity( Stock&,  Stock&);
+		static bool comparePrice( Stock&,  Stock&);
+		static bool compareCategory( Stock&,  Stock&);
+		static bool compareSubCategory( Stock&,  Stock&);
 
 	private:
 		string itemID;

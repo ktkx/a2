@@ -4,15 +4,9 @@ Stock::Stock()
 {
 
 }
-itemID;
-string itemDescription;
-string itemCategory;
-string itemSubCategory;
-int amount; 		// price
-int quantity;
-Date transactedDate;
 
-Stock(string itemID, string itemDescription, string itemCategory, string itemSubCategory, int amount, int quantity, Date transactedDate)
+
+Stock::Stock(string itemID, string itemDescription, string itemCategory, string itemSubCategory, int amount, int quantity, Date transactedDate)
 {
 	this->itemID = itemID;
 	this->itemDescription = itemDescription;
@@ -60,7 +54,7 @@ Date Stock::getDate()
 }
 
 		
-		//mutator	 
+//mutator	 
 void Stock::setID(string id)
 {
 	itemID = id;
@@ -99,18 +93,32 @@ void Stock::setDate(Date d)
 	transactedDate.year = d.year;
 }	 	 
 
-bool compareQuantity(const Stock& a, const Stock& b) {
-	return a.quantity < b.quantity;
+bool Stock::compareQuantity( Stock& a,  Stock& b) {
+	return a.getQuantity() < b.getQuantity();
 }
 
-bool comparePrice(const Stock& a, const Stock& b) {
-	return a.amount < b.amount;
+bool Stock::comparePrice( Stock& a,  Stock& b) {
+	return a.getAmount() < b.getAmount();
 }
 
-bool compareCategory(const Stock& a, const Stock& b) {
-	return a.itemCategory < b.itemCategory;
+bool Stock::compareCategory( Stock& a,  Stock& b) {
+	return a.getCat() < b.getCat();
 }
 
-bool compareSubCategory(const Stock& a, const Stock& b) {
-	return a.itemSubCategory < b.itemSubCategory;
+bool Stock::compareSubCategory( Stock& a,  Stock& b) {
+	return a.getSubCat() < b.getSubCat();
 }
+
+
+void Stock::displayStock()
+{
+	cout << getID() << " : " 
+		<< getDesc() << " : " 
+		<< getCat() << " : " 
+		<< getSubCat() << " : " 
+		<< getAmount() << " : " 
+		<< getQuantity() << " : "
+		//<< stocks[index].getDate() 
+		<< endl;
+}
+

@@ -1,8 +1,8 @@
 // UserList.h
+#pragma once
 #include "User.h"
 #include <vector>
-#include <iostream>
-#include <fstream>
+#include <string>
 using namespace std;
 
 class UserList {
@@ -10,9 +10,10 @@ class UserList {
 	public:
 		UserList();
 		bool validateUser(string,string);
-		void lockAccount(string);	  
+		void lockAccount(string);
+		vector<User> users;	 
 		
 	private:
-		vector<User> users;
+		
 };
 

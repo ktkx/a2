@@ -1,6 +1,10 @@
 // StockList.h
+#pragma once
 #include "Stock.h"
 #include <vector>
+#include <string>
+#include <iostream>
+#include <algorithm>
 using namespace std;
 
 class StockList {
@@ -8,7 +12,7 @@ class StockList {
 	public:
 		StockList();
 		void createNewRecord(Stock);
-		void displayStock();
+		
 		void provideStockAlerts(int);
 		void searchStockByCategory(string);
 		void searchStockByPrice(int);
@@ -28,7 +32,9 @@ class StockList {
 		void sortCategoryDescending();
 		void sortSubCategoryDescending();
 		
-	private:
 		vector<Stock> stocks;
+		
+	private:
+		
 };
 

@@ -8,26 +8,16 @@ StockList::StockList()
 
 void StockList::createNewRecord (Stock st)
 {
-	stocks.push_back (&st);
+	stocks.push_back(st);
 }
 
-void StockList::displayStock(int index)
-{
-	cout << stocks[index].getID() << " : " 
-		<< stocks[index].getDesc() << " : " 
-		<< stocks[index].getCat() << " : " 
-		<< stocks[index].getSubCat() << " : " 
-		<< stocks[index].getAmount() << " : " 
-		<< stocks[index].getQuantity() << " : " 
-		<< stocks[index].getDate() << endl;
-}
-
+/*
 void StockList::provideStockAlerts(int amt) //amt = threshold set
 {
 	vector<int> num; //Vector array to store index of stock
-	for (int = 0; i < stocks.size(); i++)
+	for (int i = 0; i < stocks.size(); i++)
 	{
-		if (stock[i].get < amt)
+		if (stocks[i].get < amt)
 			num.push_back(i); //If stock quantity < amt, store index of that stock into num array
 	}
 
@@ -42,6 +32,7 @@ void StockList::provideStockAlerts(int amt) //amt = threshold set
 	else //If there is not any stock with quantity < amt, print message
 		cout << "There is no item with quantity below " << amt << endl;
 }
+
 
 void StockList::searchStockByCategory (string cat)
 {
@@ -68,52 +59,52 @@ void StockList::searchStockByQuantity(int quantity)
 		if (quantity == stocks[i].getQuantity())
 			displayStock(i);
 	}
-}
+}*/
 
 void StockList::updateStock(Stock st, int index)
 {
-	stocks[index] = &st;
+	stocks[index] = st;
 }
 void StockList::removeStock(string itemID)
 {
 	int index = 0;
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, ++index) {
-		if (itemID == *it.getID()) {
+		if (itemID == (*it).getID()) {
 			stocks.erase(it);
 		}
 	}
 }
 
-void sortPriceAscending() {
-	sort(stocks.begin(), stocks.end(), Stocks::comparePrice);
+void StockList::sortPriceAscending() {
+	sort(stocks.begin(), stocks.end(), Stock::comparePrice);
 }
 
-void sortQuantityAscending() {
-	sort(stocks.begin(), stocks.end(), Stocks::compareQuantity);
+void StockList::sortQuantityAscending() {
+	sort(stocks.begin(), stocks.end(), Stock::compareQuantity);
 }
 
-void sortCategoryAscending() {
-	sort(stocks.begin(), stocks.end(), Stocks::compareCategory);
+void StockList::sortCategoryAscending() {
+	sort(stocks.begin(), stocks.end(), Stock::compareCategory);
 }
 
-void sortSubCategoryAscending() {
-	sort(stocks.begin(), stocks.end(), Stocks::compareSubCategory);
+void StockList::sortSubCategoryAscending() {
+	sort(stocks.begin(), stocks.end(), Stock::compareSubCategory);
 }
 
-void sortPriceDescending() {
+void StockList::sortPriceDescending() {
 	sortPriceAscending();
 	reverse(stocks.begin(), stocks.end());
 }
 
-void sortQuantityDescending() {
+void StockList::sortQuantityDescending() {
 	sortQuantityAscending();
 	reverse(stocks.begin(), stocks.end());
 }
-void sortCategoryDescending() {
+void StockList::sortCategoryDescending() {
 	sortCategoryAscending();
 	reverse(stocks.begin(), stocks.end());
 }
-void sortSubCategoryDescending() {
+void StockList::sortSubCategoryDescending() {
 	sortSubCategoryAscending();
 	reverse(stocks.begin(), stocks.end());
 }
