@@ -2,12 +2,17 @@
 
 #include "StockList.h"
 #include "UserList.h"
-
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <vector>
+using namespace std;
 
 class System {
 	
 	public:
 		System();
+		void readFile();
 		void encryptData();
 		void decryptData();
 		void displayLogin();
@@ -16,8 +21,7 @@ class System {
 		void displayEditDetails();
 		
 	private:
-		//StockList listOfStock;
-		//UserList listOfUser;
-		
+		StockList listOfStock;
+		UserList listOfUser;	
 };
 
