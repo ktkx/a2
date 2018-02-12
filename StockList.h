@@ -12,11 +12,10 @@ class StockList {
 		void displayStock();
 		void provideStockAlerts();
 		
-		/*
 		void addStock();
 		void searchStock();
 		void updateStock();
-		void removeStock();*/
+		void removeStock();
 		
 		/*
 		void printWhateverReport() x 4

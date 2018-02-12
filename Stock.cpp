@@ -4,7 +4,24 @@ Stock::Stock()
 {
 
 }
-		
+itemID;
+string itemDescription;
+string itemCategory;
+string itemSubCategory;
+int amount; 		// price
+int quantity;
+Date transactedDate;
+
+Stock(string itemID, string itemDescription, string itemCategory, string itemSubCategory, int amount, int quantity, Date transactedDate)
+{
+	this->itemID = itemID;
+	this->itemDescription = itemDescription;
+	this->itemCategory = itemCategory;
+	this->itemSubCategory = itemSubCategory;
+	this->amount = amount;
+	this->quantity = quantity;
+	this->transactedDate = transactedDate;
+}
 
 //assessor
 string Stock::getID()

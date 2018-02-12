@@ -13,7 +13,7 @@ class Stock {
 	
 	public:
 		Stock();
-		
+		Stock(string, string, string, string, int, int, Date);
 		//assessor
 		string getID();
 		string getDesc();
