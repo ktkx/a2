@@ -26,6 +26,8 @@ UserList::UserList()
 		users.push_back(u);	   	   
 	}
 	
+
+	
 	afile.close();	  	  
 }
 		
@@ -33,10 +35,9 @@ bool UserList::validateUser(string u, string p)
 {
 	//iterate through array
 	//match 	
-
 	for (int i = 0; i < users.size();i++)
 	{
-		if ( (u == users[i].getPass()) && (p == users[i].getID()) )
+		if ( (p == users[i].getPass()) && (u == users[i].getID()) )
 			return true;	
 	}	  
 	return false;	 	 
