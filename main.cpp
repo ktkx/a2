@@ -1,19 +1,20 @@
 #include <iostream>
-#include <iomanip>
-#include "System.h"
+#include <fstream>
+#include <string> 
+
+#include "UserList.h"
 
 using namespace std;
 
-int displayMainMenu();
+void displayMainMenu();
 void displayLogin();
 
 int main ()
 {
 	displayLogin();	   
-	displayMainMenu();
 }
 
-int displayMainMenu()
+void displayMainMenu()
 {
 	int option = 0;
 	do
@@ -51,17 +52,44 @@ int displayMainMenu()
 	}while(option != 7);
 }
 
-void displayLogin()
+void displayLogin() 
 {
-	string id;
-	string pass;
-	cout << "===================" << endl;
-	cout << "       Login       " << endl;
-	cout << "===================" << endl;
-	cout << "Enter username: " ;
-	cin >> id;
-	cout << "Enter password: ";
-	cin >> pass;
+
+	string userId;
+	string userPass;
+	int loginTry = 0;
+	ifstream afile;
+	const int size = 30;
+	userId[size];
+	userPass[size];
 	
+	UserList ul; 
+	do
+	{
+		cout << "Enter Valid Username: ";
+		cin >> userId;
+		cout << endl;
+		cout << "Enter Valid Password: ";
+		cin >> userPass;
+		
+		bool valid = ul.validateUser(userId, userPass);
+		
+		if (valid == true)
+		{
+			displayMainMenu();
+		}
+		
+		else 
+		{
+			displayFail();
+			loginTry++;
+		}
+		
+		if (loginTry == 3)
+		{
+			  displayLock();
+			  ul.lockAccount(userId);
+		}
+	}while (loginTry < 3);
 }
 
