@@ -31,15 +31,14 @@ class Stock {
 		void setSubCat(string);
 		void setAmount(int);
 		void setQuantity(int);
-		void setDate(Date);
+		void setDate(Date);	   	   
 		
 		//sort
 		bool compareQuantity(const Stock&, const Stock&);
 		bool comparePrice(const Stock&, const Stock&);
 		bool compareCategory(const Stock&, const Stock&);
 		bool compareSubCategory(const Stock&, const Stock&);
-			   
-		
+
 	private:
 		string itemID;
 		string itemDescription;

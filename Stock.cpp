@@ -97,7 +97,7 @@ void Stock::setDate(Date d)
 	transactedDate.day = d.day;
 	transactedDate.month = d.month;
 	transactedDate.year = d.year;
-}
+}	 	 
 
 bool compareQuantity(const Stock& a, const Stock& b) {
 	return a.quantity < b.quantity;
@@ -114,4 +114,3 @@ bool compareCategory(const Stock& a, const Stock& b) {
 bool compareSubCategory(const Stock& a, const Stock& b) {
 	return a.itemSubCategory < b.itemSubCategory;
 }
-
