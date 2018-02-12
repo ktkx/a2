@@ -11,12 +11,19 @@ class StockList {
 	
 	public:
 		StockList();
-		void createNewRecord(Stock);
-		
+
 		void provideStockAlerts(int);
+		bool stockExists(string);
+		int getIndex(string);
+		Stock getStock(string);
+
+		// search
 		void searchStockByCategory(string);
 		void searchStockByPrice(int);
 		void searchStockByQuantity(int);
+
+		// edit
+		void addStock(Stock);
 		void updateStock(Stock, int);
 		void removeStock(string);
 		
@@ -27,6 +34,7 @@ class StockList {
 		void sortSubCategoryAscending();
 
 		//Sort descending
+		// to do - implement as separate or within search
 		void sortPriceDescending();
 		void sortQuantityDescending();
 		void sortCategoryDescending();

@@ -15,10 +15,19 @@ class System {
 		void readFile();
 		void encryptData();
 		void decryptData();
+
 		void displayLogin();
 		void displayFail(){cout<<"Invalid Username or Password!" << endl;};
-		int displayMainMenu();
-		void displayEditDetails();
+		void displayMainMenu();
+		
+
+
+		void displayAddStockMenu();
+		void displayRemoveStockMenu();
+		void displaySearchMenu();
+		void displayUpdateStockMenu();
+		void displayPrintReportMenu();
+		void displayStockAlertMenu();
 		
 		void run();
 		

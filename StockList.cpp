@@ -6,14 +6,15 @@ StockList::StockList()
 	
 }
 
-void StockList::createNewRecord (Stock st)
+void StockList::addStock (Stock st)
 {
 	stocks.push_back(st);
 }
 
-/*
+
 void StockList::provideStockAlerts(int amt) //amt = threshold set
 {
+	/*
 	vector<int> num; //Vector array to store index of stock
 	for (int i = 0; i < stocks.size(); i++)
 	{
@@ -30,36 +31,73 @@ void StockList::provideStockAlerts(int amt) //amt = threshold set
 			displayStock(num[i]);
 	}
 	else //If there is not any stock with quantity < amt, print message
+		cout << "There is no item with quantity below " << amt << endl;*/
+
+	int count = 0;
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+		if ((*it).getQuantity() < amt) {
+			count++;
+			if (count == 1) {
+				cout << "Warning! The following items are low in stock." << endl;
+			}
+			(*it).displayStock();	
+		}
+	}
+
+	if (count == 0) {
 		cout << "There is no item with quantity below " << amt << endl;
+	}
 }
 
+bool StockList::stockExists(string ID) {
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
+int StockList::getIndex(string ID) {
+	int index = 0;
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, ++index) {
+		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
+			return index;
+		}
+	}
+}
+
+Stock StockList::getStock(string ID) {
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
+			return *it;
+		}
+	}
+}
 
 void StockList::searchStockByCategory (string cat)
 {
-	for (int i = 0; i < stocks.size(); i++)
-	{
-		if (cat == stocks[i].getCat())
-			displayStock(i);
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+		
+		if (strcmp(((*it).getCat()).c_str(), cat.c_str()) == 0) {
+			(*it).displayStock();
+		}
 	}
 }
 
-void StockList::searchStockByPrice(int price)
+void  StockList::searchStockByPrice(int price)
 {
-	for (int i = 0; i < stocks.size(); i++)
-	{
-		if (price == stocks[i].getAmount())
-			displayStock(i);
-	}
+
 }
 
 void StockList::searchStockByQuantity(int quantity)
 {
-	for (int i = 0; i < stocks.size(); i++)
-	{
-		if (quantity == stocks[i].getQuantity())
-			displayStock(i);
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+		if ((*it).getQuantity() == quantity) {
+			(*it).displayStock();
+		}
 	}
-}*/
+}
 
 void StockList::updateStock(Stock st, int index)
 {

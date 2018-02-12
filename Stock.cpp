@@ -112,13 +112,16 @@ bool Stock::compareSubCategory( Stock& a,  Stock& b) {
 
 void Stock::displayStock()
 {
-	cout << getID() << " : " 
-		<< getDesc() << " : " 
-		<< getCat() << " : " 
-		<< getSubCat() << " : " 
-		<< getAmount() << " : " 
+	cout << getID() << " : "
+		<< getDesc() << " : "
+		<< getCat() << " : "
+		<< getSubCat() << " : "
+		<< getAmount() << " : "
 		<< getQuantity() << " : "
-		//<< stocks[index].getDate() 
+		<< dateToString(getDate())
 		<< endl;
 }
 
+string Stock::dateToString(Date date) {
+	return to_string(date.day) + "-" + date.month + "-" + to_string(date.year);
+}

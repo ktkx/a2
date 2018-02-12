@@ -16,6 +16,7 @@ class Stock {
 	public:
 		Stock();
 		Stock(string, string, string, string, int, int, Date);
+
 		//assessor
 		string getID();
 		string getDesc();
@@ -24,8 +25,7 @@ class Stock {
 		int getAmount();
 		int getQuantity();
 		Date getDate();
-		void displayStock();
-
+		
 		//mutator	 
 		void setID(string);
 		void setDesc(string);
@@ -34,6 +34,9 @@ class Stock {
 		void setAmount(int);
 		void setQuantity(int);
 		void setDate(Date);	   	   
+
+		void displayStock();
+		string dateToString(Date);
 		
 		//sort
 		static bool compareQuantity( Stock&,  Stock&);
