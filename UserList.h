@@ -1,7 +1,8 @@
 // UserList.h
 #include "User.h"
 #include <vector>
-#include <string>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 class UserList {
