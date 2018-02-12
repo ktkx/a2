@@ -22,9 +22,25 @@ void StockList::displayStock(int index)
 		<< stocks[index].getDate() << endl;
 }
 
-void StockList::provideStockAlerts()
+void StockList::provideStockAlerts(int amt) //amt = threshold set
 {
+	vector<int> num; //Vector array to store index of stock
+	for (int = 0; i < stocks.size(); i++)
+	{
+		if (stock[i].get < amt)
+			num.push_back(i); //If stock quantity < amt, store index of that stock into num array
+	}
 
+	if (num.size() > 0) //If there are stocks with quantity < amt,
+	{
+		cout << "Warning! Low stock!" << endl;
+
+		//Display the stocks
+		for (int i = 0; i < num.size(); i++)
+			displayStock(num[i]);
+	}
+	else //If there is not any stock with quantity < amt, print message
+		cout << "There is no item with quantity below " << amt << endl;
 }
 
 void StockList::searchStockByCategory (string cat)
