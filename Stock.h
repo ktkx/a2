@@ -5,7 +5,7 @@ using namespace std;
 struct Date
 {
 	int day;
-	int month;
+	string month;
 	int year;
 };
 
