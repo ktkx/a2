@@ -11,6 +11,7 @@ class UserList {
 		UserList();
 		bool validateUser(string,string);
 		void lockAccount(string);	  
+		//void unlockAccount(string);
 		
 	private:
 		vector<User> users;

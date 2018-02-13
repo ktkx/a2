@@ -93,6 +93,10 @@ void Stock::setDate(Date d)
 	transactedDate.year = d.year;
 }	 	 
 
+bool Stock::compareDescription(Stock& a, Stock& b) {
+	return a.getDesc() < b.getDesc();
+}
+
 bool Stock::compareQuantity( Stock& a,  Stock& b) {
 	return a.getQuantity() < b.getQuantity();
 }

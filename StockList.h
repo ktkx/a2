@@ -2,9 +2,12 @@
 #pragma once
 #include "Stock.h"
 #include <vector>
-#include <string>
+#include <cstring>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 using namespace std;
 
 class StockList {
@@ -17,32 +20,15 @@ class StockList {
 		int getIndex(string);
 		Stock getStock(string);
 
-		// search
-		void searchStockByCategory(string);
-		void searchStockByPrice(int);
-		void searchStockByQuantity(int);
+		void search(int, vector<Stock>&);
+		void sort_results(int, vector<Stock>&, bool);
 
 		// edit
 		void addStock(Stock);
-		void updateStock(Stock, int);
+		void updateStock(int, int);
 		void removeStock(string);
 		
-		//Sort ascending
-		void sortPriceAscending();
-		void sortQuantityAscending();
-		void sortCategoryAscending();
-		void sortSubCategoryAscending();
-
-		//Sort descending
-		// to do - implement as separate or within search
-		void sortPriceDescending();
-		void sortQuantityDescending();
-		void sortCategoryDescending();
-		void sortSubCategoryDescending();
-		
-		vector<Stock> stocks;
-		
 	private:
-		
+		vector<Stock> stocks;
 };
 

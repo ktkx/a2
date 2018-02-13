@@ -3,14 +3,42 @@
 
 StockList::StockList()
 {
-	
+	ifstream inFile;
+
+	inFile.open("SampleData.txt");
+	if (!inFile) {
+		cerr << "Unable to open file";
+		exit(1);
+	}
+
+	string line;
+	string itemID, itemDescription, itemCategory, itemSubCategory;
+	Date date;
+	int amount, quantity;
+	char garbage;
+
+	while (getline(inFile, line)) {
+		istringstream linestream(line);
+
+		getline(linestream, itemID, ':');
+		getline(linestream, itemDescription, ':');
+		getline(linestream, itemCategory, ':');
+		getline(linestream, itemSubCategory, ':');
+		linestream >> amount >> garbage >> quantity >> garbage;
+
+		linestream >> date.day >> garbage;
+		getline(linestream, date.month, '-');
+		linestream >> date.year;
+
+		Stock s(itemID, itemDescription, itemCategory, itemSubCategory, amount, quantity, date);
+		addStock(s);
+	}
 }
 
 void StockList::addStock (Stock st)
 {
 	stocks.push_back(st);
 }
-
 
 void StockList::provideStockAlerts(int amt) //amt = threshold set
 {
@@ -75,34 +103,141 @@ Stock StockList::getStock(string ID) {
 	}
 }
 
-void StockList::searchStockByCategory (string cat)
-{
-	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+void StockList::search(int option, vector<Stock>& search_results) {
+	string input;
+	int range1, range2;
+	Date date;
+
+	switch (option)
+	{
+	case 1: cout << "Enter category: ";
+		cin.clear();
+		cin.ignore(10000, '\n');
+		getline(cin, input);
+
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+			if (strcmp(((*it).getCat()).c_str(), input.c_str()) == 0) {
+				//(*it).displayStock();
+				search_results.push_back(*it);
+			}
+		}
+		break;
+	case 2: cout << "Enter sub category";
+		cin.clear();
+		cin.ignore(10000, '\n');
+		getline(cin, input);
+
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+			if (strcmp(((*it).getSubCat()).c_str(), input.c_str()) == 0) {
+				//(*it).displayStock();
+				search_results.push_back(*it);
+			}
+		}
+		break;
+	case 3: cout << "Enter price range (e.g. 10 20): ";
+		cin >> range1 >> range2;
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+			if ((*it).getAmount() >= range1 && (*it).getAmount() <= range2) {
+				search_results.push_back(*it);
+			}
+		}
+		break;
+
+	case 4: cout << "Enter quantity range (e.g. 1000 2000): ";
+		cin >> range1 >> range2;
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+			if ((*it).getQuantity() >= range1 && (*it).getQuantity() <= range2) {
+				search_results.push_back(*it);
+			}
+		}
+		break;
+	}
+}
+
+void StockList::sort_results(int option, vector<Stock>& search_results, bool ascending) {
+	switch (option)
+	{
+	case 1: sort(search_results.begin(), search_results.end(), Stock::compareDescription);
+		break;
+	case 2: sort(search_results.begin(), search_results.end(), Stock::compareDescription);
+		break;
+	case 3: sort(search_results.begin(), search_results.end(), Stock::comparePrice);
+		break;
+	case 4: sort(search_results.begin(), search_results.end(), Stock::compareQuantity);
+		break;
+	}
+	if (!ascending) {
+		reverse(search_results.begin(), search_results.end());
+	}
 		
-		if (strcmp(((*it).getCat()).c_str(), cat.c_str()) == 0) {
-			(*it).displayStock();
-		}
+}
+
+void StockList::updateStock(int index, int option)
+{
+	string input;
+	int int_input;
+	Date new_date;
+	char garbage;
+	istringstream linestream(input);
+
+	switch (option)
+	{
+	case 1: cout << "Enter new ID: ";		// validation required
+		cin.clear();
+		cin.ignore(10000, '\n');
+		getline(cin, input);
+		stocks[index].setID(input);
+		break;
+
+	case 2: cout << "Enter new description: ";
+		cin.clear();
+		cin.ignore(10000, '\n');
+		getline(cin, input);
+		stocks[index].setDesc(input);
+		break;
+
+	case 3: cout << "Enter new category: ";
+		cin.clear();
+		cin.ignore(10000, '\n');
+		getline(cin, input);
+		stocks[index].setCat(input);
+		break;
+
+	case 4: cout << "Enter new sub category: ";
+		cin.clear();
+		cin.ignore(10000, '\n');
+		getline(cin, input);
+		stocks[index].setSubCat(input);
+		break;
+
+	case 5: cout << "Enter new amount: ";
+		cin >> int_input;
+		stocks[index].setAmount(int_input);
+		break;
+
+	case 6: cout << "Enter new quantity: ";
+		cin >> int_input;
+		stocks[index].setQuantity(int_input);
+		break;
+
+	case 7: cout << "Enter new date: ";
+		cin.clear();
+		cin.ignore(10000, '\n');
+		getline(cin, input);
+
+		linestream >> new_date.day >> garbage;
+		getline(linestream, new_date.month , '-');
+		linestream >> new_date.year;
+
+		stocks[index].setDate(new_date);
+
+		break;
+
+	default: cout << "Incorrect option, please enter option 1 to 7" << endl;
+		break;
 	}
 }
 
-void  StockList::searchStockByPrice(int price)
-{
-
-}
-
-void StockList::searchStockByQuantity(int quantity)
-{
-	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
-		if ((*it).getQuantity() == quantity) {
-			(*it).displayStock();
-		}
-	}
-}
-
-void StockList::updateStock(Stock st, int index)
-{
-	stocks[index] = st;
-}
 void StockList::removeStock(string itemID)
 {
 	int index = 0;
@@ -113,37 +248,5 @@ void StockList::removeStock(string itemID)
 	}
 }
 
-void StockList::sortPriceAscending() {
-	sort(stocks.begin(), stocks.end(), Stock::comparePrice);
-}
 
-void StockList::sortQuantityAscending() {
-	sort(stocks.begin(), stocks.end(), Stock::compareQuantity);
-}
-
-void StockList::sortCategoryAscending() {
-	sort(stocks.begin(), stocks.end(), Stock::compareCategory);
-}
-
-void StockList::sortSubCategoryAscending() {
-	sort(stocks.begin(), stocks.end(), Stock::compareSubCategory);
-}
-
-void StockList::sortPriceDescending() {
-	sortPriceAscending();
-	reverse(stocks.begin(), stocks.end());
-}
-
-void StockList::sortQuantityDescending() {
-	sortQuantityAscending();
-	reverse(stocks.begin(), stocks.end());
-}
-void StockList::sortCategoryDescending() {
-	sortCategoryAscending();
-	reverse(stocks.begin(), stocks.end());
-}
-void StockList::sortSubCategoryDescending() {
-	sortSubCategoryAscending();
-	reverse(stocks.begin(), stocks.end());
-}
 

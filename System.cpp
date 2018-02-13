@@ -2,72 +2,91 @@
 
 #include "System.h"
 
+// for testing
+/*
+for (vector<Stock>::iterator it = listOfStock.stocks.begin(); it != listOfStock.stocks.begin()+10; ++it) {
+(*it).displayStock();
+}
+*/
 
-
-void System::run() {
-	
-	readFile();
-
-	/* // for testing
-	for (vector<Stock>::iterator it = listOfStock.stocks.begin(); it != listOfStock.stocks.begin()+10; ++it) {
-		(*it).displayStock();
-	}*/
-
-	displayMainMenu();
+System::System() {
+	key = "mywillmadereal";
 }
 
-void System::readFile() {
-	ifstream inFile;
-	vector<string> unique_id;
+void System::displayMenu() {
+	int i = 0;
+	do
+	{
+		cout << "1. Login" << endl;
+		cout << "2. Quit" << endl;
 
-	/*
-	string data;
-	string itemID, itemDescription, itemCategory, itemSubCategory, transactedDate;
-	string amount, quantity, day, year;
-	Date date;*/
-	
-    inFile.open("SampleData.txt");
-    if (!inFile) {
-        cerr << "Unable to open file";
-        exit(1);
-    }
-    
-	string line;
-	string itemID, itemDescription, itemCategory, itemSubCategory;
-	Date date;
-	int amount, quantity;
-	char garbage;
+		cout << "Please choose your option : ";
+		cin >> i;
 
-	while (getline(inFile, line)) {
-		istringstream linestream(line);
+		switch (i)
+		{
 
-		getline(linestream, itemID, ':');
-		getline(linestream, itemDescription, ':');
-		getline(linestream, itemCategory, ':');
-		getline(linestream, itemSubCategory, ':');
-		linestream >> amount >> garbage >> quantity >> garbage;
-		
-		linestream >> date.day >> garbage;
-		getline(linestream, date.month, '-');
-		linestream >> date.year;
-
-		Stock s(itemID, itemDescription, itemCategory, itemSubCategory, amount, quantity, date);
-		listOfStock.addStock(s);
-	}
+			case 1: displayLogin();
+				break;
+			case 2: exit(-1);
+				break;
+			default: cout << "Please enter the correct option!" << endl;
+		}
+	}while (i != 2);
 }
 
 
-
-void System::encryptData() {
-	// to do
+string System::encryptData(string input) {
+	while (key.size() < input.size())
+		key += input;
+	for (string::size_type i = 0; i < input.size(); ++i)
+		input[i] ^= key[i];
+	return input;
 }
 
-void System::decryptData() {
-	// to do
+string System::decryptData(string input) {
+	return encryptData(input);
 }
 
 void System::displayLogin() {
-	// to do
+
+	int loginTry = 0;
+	ifstream afile;
+	string userId;
+	string userPass;
+
+	// ?_?
+	//const int size = 30;
+	//userId[size];
+	//userPass[size];
+	
+	do
+	{
+		cout << "Enter Valid Username: ";
+		cin >> userId;
+		cout << endl;
+		cout << "Enter Valid Password: ";
+		cin >> userPass;
+		
+		bool valid = listOfUser.validateUser(userId, userPass);
+		
+		if (valid == true)
+		{
+			displayMainMenu();
+		}
+		
+		else 
+		{
+			displayFail();
+			loginTry++;
+		}
+		
+		if (loginTry == 3)
+		{
+			  displayLock();
+			  listOfUser.lockAccount(userId);
+		}
+	}while (loginTry < 3);
 }
 
 
@@ -80,10 +99,10 @@ void System::displayMainMenu() {
 		cout << "1. Add stock" << endl;
 		cout << "2. Remove stock" << endl;
 		cout << "3. Search stock" << endl;
-		cout << "4. Update stock (NOT DONE)" << endl;
+		cout << "4. Update stock" << endl;
 		cout << "5. Print report (NOT DONE)" << endl;
 		cout << "6. Stock alerts" << endl;
-		cout << "7. Quit" << endl << endl;
+		cout << "7. Log Out" << endl << endl;
 
 		cout << "Please enter your option : ";
 		cin >> option;
@@ -101,6 +120,10 @@ void System::displayMainMenu() {
 		case 5: cout << "print stock menu";
 			break;
 		case 6: displayStockAlertMenu();
+			break;
+		case 7: cout << "Logging out..." << endl << endl;
+			//sleep(1);			// ?_?
+			displayMenu();
 			break;
 		default: cout << "Incorrect option, please enter option 1 to 6" << endl;
 			break;
@@ -174,36 +197,57 @@ void System::displayRemoveStockMenu() {
 }
 
 void System::displaySearchMenu() {
-	int option = 0, quantity;
+	int option = 0, sort = 0;
+	bool ascending;
 	string category;
+	vector<Stock> search_results;
+
+	// get search option
 	cout << "1. By category" << endl;
-	cout << "2. By price (NOT DONE)" << endl;
-	cout << "3. By quantity (NOT DONE)" << endl << endl;
+	cout << "2. By sub category" << endl;
+	cout << "3. By price" << endl;
+	cout << "4. By quantity" << endl << endl;
 	cout << "Please enter your option : ";
 	cin >> option;
 
-	switch (option)
-	{
-	case 1: cout << "Enter category: ";
-		cin.clear();
-		cin.ignore(10000, '\n');
-		getline(cin, category);
-		listOfStock.searchStockByCategory(category);
-		break;
-	case 2: cout << "Enter price range (X-Y): ";
-		// to do
-		break;
-	case 3: cout << "Enter quantity range (X-Y): ";
-		// to do
-		break;
+	listOfStock.search(option, search_results);
+	cout << endl;
+
+	// if there are matching results
+	if (!search_results.empty()) {
+		// get sort option
+		do {
+			cout << "Sort results by: " << endl;
+			cout << "1. Ascending" << endl;
+			cout << "2. Descending" << endl << endl;
+			cout << "Please enter your option : ";
+			cin >> sort;
+		} while (sort != 1 && sort != 2);
+
+		if (sort == 1)
+			ascending = true;
+		else
+			ascending = false;
+
+		listOfStock.sort_results(option, search_results, ascending);
+
+		// print out each stock in accordance with user specifications
+		for (vector<Stock>::iterator it = search_results.begin(); it != search_results.end(); ++it) {
+			(*it).displayStock();
+		}
+	}
+
+	else {
+		cout << "No records found!" << endl;
 	}
 	
+
 	cout << endl;
 }
 
 void System::displayUpdateStockMenu() {
 
-	string itemID, input;
+	string itemID;
 	int int_input;
 	cout << "Enter Item ID: ";
 	cin.clear();
@@ -215,63 +259,22 @@ void System::displayUpdateStockMenu() {
 
 		cout << "Select attribute to update" << endl << endl;
 		cout << "1. Item ID" << endl;
-		cout << "2. Item Description" << endl;
-		cout << "3. Item Category" << endl;
-		cout << "4. Item Sub-Category" << endl;
-		cout << "5. Item Amount" << endl;
-		cout << "6. Item Quantity" << endl;
-		cout << "7. Item Date" << endl << endl;
+		cout << "2. Item description" << endl;
+		cout << "3. Item category" << endl;
+		cout << "4. Item sub category" << endl;
+		cout << "5. Item amount" << endl;
+		cout << "6. Item quantity" << endl;
+		cout << "7. Item date" << endl << endl;
 
 		cout << "Please enter your option : ";
 		cin >> option;
 
-		switch (option)
-		{
-		case 1: cout << "Enter new ID: ";		// validation required
-			cin.clear();
-			cin.ignore(10000, '\n');
-			getline(cin, input);
+		listOfStock.updateStock(index, option);
 
-			listOfStock.stocks[index].setID(input);
-			break;
-		case 2: cout << "Enter new description: ";
-			cin.clear();
-			cin.ignore(10000, '\n');
-			getline(cin, input);
-			listOfStock.stocks[index].setDesc(input);
-			break;
-		case 3: cout << "Enter new category: ";
-			cin.clear();
-			cin.ignore(10000, '\n');
-			getline(cin, input);
-			listOfStock.stocks[index].setCat(input);
-			break;
-		case 4: cout << "Enter new sub-category: ";
-			cin.clear();
-			cin.ignore(10000, '\n');
-			getline(cin, input);
-			listOfStock.stocks[index].setSubCat(input);
-			break;
-		case 5: cout << "Enter new amount: ";
-			cin >> int_input;
-			listOfStock.stocks[index].setAmount(int_input);
-			break;
-		case 6: cout << "Enter new quantity: ";
-			cin >> int_input;
-			listOfStock.stocks[index].setQuantity(int_input);
-			break;
-		case 7: cout << "Enter new date: ";
-				// to do
-			break;
-		default: cout << "Incorrect option, please enter option 1 to 7" << endl;
-			break;
-		}
 	}
 	else {
 		cout << "Item not found!" << endl;
 	}
-
-	
 }
 
 void System::displayPrintReportMenu() {

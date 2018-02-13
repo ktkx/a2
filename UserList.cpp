@@ -52,8 +52,10 @@ void UserList::lockAccount(string id)
 	{
 		if (id == users[i].getID())
 		{
-			users[i].locked = true;
+			users[i].setLock(true);
 		}	 
 	}	 
 }
+
+
 

@@ -39,6 +39,7 @@ class Stock {
 		string dateToString(Date);
 		
 		//sort
+		static bool compareDescription(Stock&, Stock&);
 		static bool compareQuantity( Stock&,  Stock&);
 		static bool comparePrice( Stock&,  Stock&);
 		static bool compareCategory( Stock&,  Stock&);

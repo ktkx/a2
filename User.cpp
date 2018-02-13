@@ -11,18 +11,6 @@ User::User(string u,string p)
 	pass = p;	 
 }
 
-/*	  	  
-void User::login()
-{
-
-}
-		
-void User::logout()
-{
-	
-}
-*/
-
 string User::getID()
 {
 	return userID;
@@ -31,5 +19,21 @@ string User::getID()
 string User::getPass()
 {
 	return pass;	
+}
+
+bool User::getLock() {
+	return locked;
+}
+
+void User::setID(string u) {
+	userID = u;
+}
+
+void User::setPass(string p) {
+	pass = p;
+}
+
+void User::setLock(bool l) {
+	locked = l;
 }
 

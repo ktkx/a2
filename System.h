@@ -2,24 +2,25 @@
 #pragma once
 
 #include "StockList.h"
-//#include "UserList.h"
+#include "UserList.h"
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include <vector>
+//#include <unistd.h>
 using namespace std;
 
 class System {
 	
 	public:
-		void readFile();
-		void encryptData();
-		void decryptData();
+		System();
+		string encryptData(string);
+		string decryptData(string);
 
 		void displayLogin();
 		void displayFail(){cout<<"Invalid Username or Password!" << endl;};
+		void displayLock(){cout<<"Account locked after 3 consecutive fails!" << endl;};
 		void displayMainMenu();
-		
+		void displayMenu();
 
 
 		void displayAddStockMenu();
@@ -28,12 +29,12 @@ class System {
 		void displayUpdateStockMenu();
 		void displayPrintReportMenu();
 		void displayStockAlertMenu();
-		
-		void run();
+	
 		
 	private:
 		StockList listOfStock;
-		//UserList listOfUser;	
+		UserList listOfUser;	
+		string key;
 };
 
 
