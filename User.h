@@ -1,5 +1,4 @@
 // User.h
-#pragma once
 #include <string>
 using namespace std;
 
@@ -7,11 +6,12 @@ class User {
 	
 	public:
 		User();
+		User(string,string);
 //	  	  void login();
 //	  	  void logout();
 		bool locked;
 		string getID();
-		string getPass();
+		string getPass();	 
 		
 	private:
 		string userID;
