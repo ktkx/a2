@@ -18,6 +18,10 @@ class System {
 		void displayLogin();
 		void displayFail(){cout<<"Invalid Username or Password!" << endl;};
 		void displayLock(){cout<<"Account locked after 3 consecutive fails!" << endl;};
+		void handleLockedAccount();
+		void lockAccount(string);
+		void unlockAccount(string);
+		bool checkLockedAccount(string);
 		void displayMainMenu();
 		void displayMenu();
 
@@ -32,7 +36,8 @@ class System {
 		
 	private:
 		StockList listOfStock;
-		UserList listOfUser;	
+		UserList listOfUser;
+		vector<string>lockedAccount;
 		
 };
 

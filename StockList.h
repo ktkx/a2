@@ -25,6 +25,7 @@ class StockList {
 
 		void search(int, vector<Stock>&);
 		void sort_results(int, vector<Stock>&, bool);
+		//void printReport(int);
 
 		// edit
 		void addStock(Stock);

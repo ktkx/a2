@@ -9,9 +9,7 @@ class UserList {
 	
 	public:
 		UserList();
-		bool validateUser(string,string);
-		void lockAccount(string);	  
-		//void unlockAccount(string);
+		bool validateUser(string,string); 
 		
 	private:
 		vector<User> users;

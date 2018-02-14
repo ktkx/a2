@@ -18,7 +18,8 @@ void System::displayMenu() {
 	do
 	{
 		cout << "1. Login" << endl;
-		cout << "2. Quit" << endl;
+		cout << "2. Handle Locked Account" << endl;
+		cout << "3. Quit" << endl;
 
 		cout << "Please choose your option : ";
 		cin >> i;
@@ -26,27 +27,24 @@ void System::displayMenu() {
 		switch (i)
 		{
 
-			case 1: displayLogin();
-				break;
-			case 2: exit(-1);
-				break;
-			default: cout << "Please enter the correct option!" << endl;
+		case 1: displayLogin();
+			break;
+		case 2: handleLockedAccount();
+			break;
+		case 3: exit(-1);
+			break;
+		default: cout << "Please enter the correct option!" << endl;
 		}
-	}while (i != 2);
+	} while (i != 3);
 }
 
 void System::displayLogin() {
-
-	int loginTry = 0;
-	ifstream afile;
 	string userId;
 	string userPass;
-
-	// ?_?
-	//const int size = 30;
-	//userId[size];
-	//userPass[size];
+	int loginTry = 0;
+	ifstream afile;
 	
+
 	do
 	{
 		cout << "Enter Valid Username: ";
@@ -54,26 +52,77 @@ void System::displayLogin() {
 		cout << endl;
 		cout << "Enter Valid Password: ";
 		cin >> userPass;
-		
-		bool valid = listOfUser.validateUser(userId, userPass);
-		
-		if (valid == true)
+
+		if (checkLockedAccount(userId) == false)
 		{
-			displayMainMenu();
-		}
-		
-		else 
+			bool valid = listOfUser.validateUser(userId, userPass);
+
+			if (valid == true)
+			{
+				displayMainMenu();
+			}
+			else
+			{
+				displayFail();
+				loginTry++;
+			}
+
+			if (loginTry == 3)
+			{
+				displayLock();
+				lockAccount(userId);
+			}
+		}//if checkLockAcc
+		else
 		{
-			displayFail();
-			loginTry++;
+			cout << "Account '" << userId << "' has been locked! " << endl;
+			cout << "Please Go to Option 2 (Handle Locked Account) to unlock you account " << endl;
+			cout << endl;
+			break;
 		}
-		
-		if (loginTry == 3)
+	} while (loginTry < 3);
+}
+
+bool System::checkLockedAccount(string u)
+{
+
+	for (int i = 0; i < lockedAccount.size(); i++)
+	{
+		if (u == lockedAccount[i])
+			return true;
+	}
+	return false;
+
+}
+
+
+void System::lockAccount(string id)
+{
+	lockedAccount.push_back(id);
+}
+
+void System::unlockAccount(string id)
+{
+	for (int i = 0; i < lockedAccount.size(); i++)
+	{
+		if (id == lockedAccount[i])
 		{
-			  displayLock();
-			  listOfUser.lockAccount(userId);
+			cout << "Account '" << lockedAccount[i] << "' successfully unlocked " << endl;
+			lockedAccount.pop_back();
+			break;
 		}
-	}while (loginTry < 3);
+	}
+}
+
+
+void System::handleLockedAccount()
+{
+	//UserList ul;
+	string userId, reason;
+	cout << "Enter Locked Username: ";
+	cin >> userId;
+	cout << endl;
+	unlockAccount(userId);
 }
 
 
@@ -245,6 +294,8 @@ void System::displayUpdateStockMenu() {
 
 		listOfStock.updateStock(itemID);
 
+		cout << endl << "Stock updated." << endl << endl;
+
 	}
 	else {
 		cout << "Item not found!" << endl;
@@ -253,8 +304,24 @@ void System::displayUpdateStockMenu() {
 
 void System::displayPrintReportMenu() {
 	// to do
-	cout << setw(15);
-	cout << left << "Stock item" << "In" << "Out" << "Amount(Per Unit)" << "Total Amount" << endl;
+	int option;
+
+	cout << "1) Daily stock summary report" << endl
+		<< "2) Weekly stock summary report" << endl
+		<< "3) Monthly stock summary report" << endl
+		<< "4) Yearly stock summary report" << endl << endl;
+
+	cout << "Select report type: ";
+	cin >> option;
+
+	cout << endl
+		<< setw(15) << left << "Stock item"
+		<< setw(10) << left << "In"
+		<< setw(10) << left << "Out"
+		<< setw(20) << left << "Amount(Per Unit)"
+		<< setw(20) << left << "Total Amount" << endl << endl;
+
+	//listOfStock.printReport(option);
 }
 
 void System::displayStockAlertMenu() {

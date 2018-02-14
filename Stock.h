@@ -37,7 +37,7 @@ class Stock {
 
 		void displayStock();
 		static string dateToString(Date);
-		
+		static int monthToInt(string);
 		//sort
 		static bool compareDescription(Stock&, Stock&);
 		static bool compareQuantity( Stock&,  Stock&);

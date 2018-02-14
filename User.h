@@ -7,19 +7,17 @@ class User {
 	public:
 		User();
 		User(string,string);
-		
 		string getID();
-		string getPass();	 
-		bool getLock();
-		
+		string getPass();
 		void setID(string);
-		void setPass(string);
-		void setLock(bool);
-
+		bool getLocked();
+		void setLockedTrue();
+		void setLockedFalse();	 
 		
 	private:
 		string userID;
 		string pass;
-		bool locked;
+		bool locked=false;
+		
 };
 

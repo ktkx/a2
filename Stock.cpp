@@ -129,3 +129,31 @@ void Stock::displayStock()
 string Stock::dateToString(Date date) {
 	return to_string(date.day) + "-" + date.month + "-" + to_string(date.year);
 }
+
+int monthToInt(string m)
+{
+	if (m == "Jan")
+		return 1;
+	else if (m == "Feb")
+		return 2;
+	else if (m == "Mar")
+		return 3;
+	else if (m == "Apr")
+		return 4;
+	else if (m == "May")
+		return 5;
+	else if (m == "Jun")
+		return 6;
+	else if (m == "Jul")
+		return 7;
+	else if (m == "Aug")
+		return 8;
+	else if (m == "Sep")
+		return 9;
+	else if (m == "Oct")
+		return 10;
+	else if (m == "Nov")
+		return 11;
+	else 
+		return 12;
+}

@@ -4,13 +4,21 @@
 StockList::StockList()
 {
 	ifstream inFile;
+	bool decrypt = false;
 
-	inFile.open("SampleData.txt");
-	//inFile.open("output.txt");
-	if (!inFile) {
-		cerr << "Unable to open file";
-		exit(1);
+	inFile.open("output.txt");
+
+	if (!inFile)
+	{
+		inFile.open("SampleData.txt");
+
+		if (!inFile) {
+			cerr << "Unable to open file";
+			exit(1);
+		}
 	}
+	else
+		decrypt = true;
 
 	string line;
 	string itemID, itemDescription, itemCategory, itemSubCategory;
@@ -19,7 +27,9 @@ StockList::StockList()
 	char garbage;
 
 	while (getline(inFile, line)) {
-		line = decryptData(line);
+		if (decrypt)
+			line = decryptData(line);
+		
 		istringstream linestream(line);
 
 		getline(linestream, itemID, ':');
@@ -281,14 +291,13 @@ void StockList::toFile() {
 	string line;
 	 
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
-		line = (*it).getID() + ":" + (*it).getDesc() + (*it).getCat() + (*it).getSubCat() + to_string((*it).getAmount()) + to_string((*it).getQuantity()) +
-			(*it).dateToString((*it).getDate())  + "\n";
-		cout << line << endl;
+		line = (*it).getID() + ":" + (*it).getDesc() + ":" + (*it).getCat() + ":" + (*it).getSubCat() + ":"
+			+ to_string((*it).getAmount()) + ":" + to_string((*it).getQuantity()) + ":"
+			+ (*it).dateToString((*it).getDate());
+		
 		line = encryptData(line);
-		cout << line << endl;
 
-		outFile << line;
-
+		outFile << line << '\n';
 
 		/*
 		outFile << encryptData((*it).getID()) << ":"
@@ -310,15 +319,40 @@ string StockList::encryptData(string toEncrypt) {
 		input[i] ^= key[i];
 	return input;*/
 
-	char key = 'K'; //Any char will work
 	string output = toEncrypt;
 
 	for (int i = 0; i < toEncrypt.size(); i++)
-		output[i] = toEncrypt[i]+4;
+		output[i] = toEncrypt[i] + 4;
 
 	return output;
 }
 
-string StockList::decryptData(string input) {
-	return encryptData(input);
+string StockList::decryptData(string toDecrypt) {
+	string output = toDecrypt;
+
+	for (int i = 0; i < toDecrypt.size(); i++)
+		output[i] = toDecrypt[i] - 4;
+
+	return output;
 }
+
+//void printReport(int option)
+//{
+	//time_t now = time(0);
+	//char* dt = ctime(&now);
+
+	/*switch (option)
+	{
+	case 1:
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+
+		}
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	}*/
+//}

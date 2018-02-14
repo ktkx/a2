@@ -26,10 +26,9 @@ UserList::UserList()
 		users.push_back(u);	   	   
 	}
 	
-
-	
 	afile.close();	  	  
 }
+
 		
 bool UserList::validateUser(string u, string p)
 {
@@ -42,20 +41,4 @@ bool UserList::validateUser(string u, string p)
 	}	  
 	return false;	 	 
 }
-
-void UserList::lockAccount(string id)
-{
-	//use id to search in array if found 
-	// then set locked in user record to true
-	// else do nothing
-	for (int i = 0; i < users.size();i++)
-	{
-		if (id == users[i].getID())
-		{
-			users[i].setLock(true);
-		}	 
-	}	 
-}
-
-
 

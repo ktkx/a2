@@ -2,7 +2,6 @@
 
 User::User()
 {
-	locked = false;
 }
 
 User::User(string u,string p)
@@ -21,19 +20,23 @@ string User::getPass()
 	return pass;	
 }
 
-bool User::getLock() {
+void User::setID (string id)
+{
+	userID = id;
+}
+
+bool User::getLocked()
+{
 	return locked;
 }
 
-void User::setID(string u) {
-	userID = u;
+void User::setLockedTrue()
+{
+	locked = true;
 }
 
-void User::setPass(string p) {
-	pass = p;
-}
-
-void User::setLock(bool l) {
-	locked = l;
+void User::setLockedFalse()
+{
+	locked = false;
 }
 
