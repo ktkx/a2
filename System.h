@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <iomanip>
 //#include <unistd.h>
 using namespace std;
 
@@ -13,8 +14,6 @@ class System {
 	
 	public:
 		System();
-		string encryptData(string);
-		string decryptData(string);
 
 		void displayLogin();
 		void displayFail(){cout<<"Invalid Username or Password!" << endl;};
@@ -34,7 +33,7 @@ class System {
 	private:
 		StockList listOfStock;
 		UserList listOfUser;	
-		string key;
+		
 };
 
 

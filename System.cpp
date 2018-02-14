@@ -10,7 +10,7 @@ for (vector<Stock>::iterator it = listOfStock.stocks.begin(); it != listOfStock.
 */
 
 System::System() {
-	key = "mywillmadereal";
+	
 }
 
 void System::displayMenu() {
@@ -33,19 +33,6 @@ void System::displayMenu() {
 			default: cout << "Please enter the correct option!" << endl;
 		}
 	}while (i != 2);
-}
-
-
-string System::encryptData(string input) {
-	while (key.size() < input.size())
-		key += input;
-	for (string::size_type i = 0; i < input.size(); ++i)
-		input[i] ^= key[i];
-	return input;
-}
-
-string System::decryptData(string input) {
-	return encryptData(input);
 }
 
 void System::displayLogin() {
@@ -117,12 +104,13 @@ void System::displayMainMenu() {
 			break;
 		case 4: displayUpdateStockMenu();
 			break;
-		case 5: cout << "print stock menu";
+		case 5: displayPrintReportMenu();
 			break;
 		case 6: displayStockAlertMenu();
 			break;
 		case 7: cout << "Logging out..." << endl << endl;
 			//sleep(1);			// ?_?
+			listOfStock.toFile();
 			displayMenu();
 			break;
 		default: cout << "Incorrect option, please enter option 1 to 6" << endl;
@@ -179,11 +167,13 @@ void System::displayAddStockMenu() {
 
 void System::displayRemoveStockMenu() {
 	string itemID;
+	int option, count = 1;
 	cout << "Enter Item ID: ";
 	cin.clear();
 	cin.ignore(10000, '\n');
 	getline(cin, itemID);
 	if (listOfStock.stockExists(itemID) == true) {
+		//vector<Stock> results = listOfStock.findAll(itemID);
 		listOfStock.removeStock(itemID);
 	}
 	else {
@@ -251,20 +241,9 @@ void System::displayUpdateStockMenu() {
 	if (listOfStock.stockExists(itemID) == true) {
 		int option = 0, index = 0;
 		index = listOfStock.getIndex(itemID);
+		//vector<Stock> results = listOfStock.findAll(itemID);
 
-		cout << "Select attribute to update" << endl << endl;
-		cout << "1. Item ID" << endl;
-		cout << "2. Item description" << endl;
-		cout << "3. Item category" << endl;
-		cout << "4. Item sub category" << endl;
-		cout << "5. Item amount" << endl;
-		cout << "6. Item quantity" << endl;
-		cout << "7. Item date" << endl << endl;
-
-		cout << "Please enter your option : ";
-		cin >> option;
-
-		listOfStock.updateStock(index, option);
+		listOfStock.updateStock(itemID);
 
 	}
 	else {
@@ -274,6 +253,8 @@ void System::displayUpdateStockMenu() {
 
 void System::displayPrintReportMenu() {
 	// to do
+	cout << setw(15);
+	cout << left << "Stock item" << "In" << "Out" << "Amount(Per Unit)" << "Total Amount" << endl;
 }
 
 void System::displayStockAlertMenu() {

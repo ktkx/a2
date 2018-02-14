@@ -14,22 +14,28 @@ class StockList {
 	
 	public:
 		StockList();
+		
+		string encryptData(string);
+		string decryptData(string);
 
 		void provideStockAlerts(int);
 		bool stockExists(string);
 		int getIndex(string);
-		Stock getStock(string);
+		vector<Stock> findAll(string);
 
 		void search(int, vector<Stock>&);
 		void sort_results(int, vector<Stock>&, bool);
 
 		// edit
 		void addStock(Stock);
-		void updateStock(int, int);
+		void updateStock(string);
 		void removeStock(string);
+
+		void toFile();
 		
 	private:
 		vector<Stock> stocks;
+		//string key = "mywillmadereal";
 
 };
 

@@ -6,6 +6,7 @@ StockList::StockList()
 	ifstream inFile;
 
 	inFile.open("SampleData.txt");
+	//inFile.open("output.txt");
 	if (!inFile) {
 		cerr << "Unable to open file";
 		exit(1);
@@ -18,6 +19,7 @@ StockList::StockList()
 	char garbage;
 
 	while (getline(inFile, line)) {
+		line = decryptData(line);
 		istringstream linestream(line);
 
 		getline(linestream, itemID, ':');
@@ -42,25 +44,6 @@ void StockList::addStock (Stock st)
 
 void StockList::provideStockAlerts(int amt) //amt = threshold set
 {
-	/*
-	vector<int> num; //Vector array to store index of stock
-	for (int i = 0; i < stocks.size(); i++)
-	{
-		if (stocks[i].get < amt)
-			num.push_back(i); //If stock quantity < amt, store index of that stock into num array
-	}
-
-	if (num.size() > 0) //If there are stocks with quantity < amt,
-	{
-		cout << "Warning! Low stock!" << endl;
-
-		//Display the stocks
-		for (int i = 0; i < num.size(); i++)
-			displayStock(num[i]);
-	}
-	else //If there is not any stock with quantity < amt, print message
-		cout << "There is no item with quantity below " << amt << endl;*/
-
 	int count = 0;
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
 		if ((*it).getQuantity() < amt) {
@@ -95,12 +78,14 @@ int StockList::getIndex(string ID) {
 	}
 }
 
-Stock StockList::getStock(string ID) {
+vector<Stock> StockList::findAll(string ID) {
+	vector<Stock> results;
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
 		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
-			return *it;
+			results.push_back(*it);
 		}
 	}
+	return results;
 }
 
 void StockList::search(int option, vector<Stock>& search_results) {
@@ -172,13 +157,37 @@ void StockList::sort_results(int option, vector<Stock>& search_results, bool asc
 		
 }
 
-void StockList::updateStock(int index, int option)
+void StockList::updateStock(string ID)
 {
 	string input;
-	int int_input;
+	int index = 0;
+	int int_input, option;
 	Date new_date;
 	char garbage;
 	istringstream linestream(input);
+
+	cout << "Displaying all matching records: " << endl;
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, index++) {
+		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
+			cout << "[Record " << index << "] ";
+			(*it).displayStock();
+		}
+	}
+	cout << endl;
+	cout << "Select a record to update: ";
+	cin >> index;
+
+	cout << "\nSelect attribute to update" << endl << endl;
+	cout << "1. Item ID" << endl;
+	cout << "2. Item description" << endl;
+	cout << "3. Item category" << endl;
+	cout << "4. Item sub category" << endl;
+	cout << "5. Item amount" << endl;
+	cout << "6. Item quantity" << endl;
+	cout << "7. Item date" << endl << endl;
+
+	cout << "Please enter your option : ";
+	cin >> option;
 
 	switch (option)
 	{
@@ -238,15 +247,78 @@ void StockList::updateStock(int index, int option)
 	}
 }
 
-void StockList::removeStock(string itemID)
+void StockList::removeStock(string ID)
 {
-	int index = 0;
+	int index = 0, option = 0;
+	
+	cout << "Displaying all matching records: " << endl;
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, index++) {
+		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
+			cout << "[Record " << index << "] ";
+			(*it).displayStock();
+		}
+	}
+	cout << endl;
+	cout << "Select a record to delete: ";
+	cin >> option;
+
+	stocks.erase(stocks.begin() + option);
+	cout << endl;
+	cout << "Record " << option << " successfully deleted!" << endl;
+
+	/*
+
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, ++index) {
 		if (itemID == (*it).getID()) {
 			stocks.erase(it);
 		}
-	}
+	}*/
 }
 
+void StockList::toFile() {
+	ofstream outFile;
+	outFile.open("output.txt");
+	string line;
+	 
+	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
+		line = (*it).getID() + ":" + (*it).getDesc() + (*it).getCat() + (*it).getSubCat() + to_string((*it).getAmount()) + to_string((*it).getQuantity()) +
+			(*it).dateToString((*it).getDate())  + "\n";
+		cout << line << endl;
+		line = encryptData(line);
+		cout << line << endl;
+
+		outFile << line;
 
 
+		/*
+		outFile << encryptData((*it).getID()) << ":"
+			<< encryptData((*it).getDesc()) << ":"
+			<< encryptData((*it).getCat()) << ":"
+			<< encryptData((*it).getSubCat()) << ":"
+			<< encryptData(to_string((*it).getAmount())) << ":"
+			<< encryptData(to_string((*it).getQuantity())) << ":"
+			<< encryptData((*it).dateToString((*it).getDate()))
+			<< "\n";*/
+	}
+	outFile.close();
+}
+
+string StockList::encryptData(string toEncrypt) {
+	/*while (key.size() < input.size())
+		key += input;
+	for (int i = 0; i < input.size(); ++i)
+		input[i] ^= key[i];
+	return input;*/
+
+	char key = 'K'; //Any char will work
+	string output = toEncrypt;
+
+	for (int i = 0; i < toEncrypt.size(); i++)
+		output[i] = toEncrypt[i]+4;
+
+	return output;
+}
+
+string StockList::decryptData(string input) {
+	return encryptData(input);
+}
