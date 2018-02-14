@@ -30,5 +30,6 @@ class StockList {
 		
 	private:
 		vector<Stock> stocks;
+
 };
 

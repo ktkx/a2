@@ -220,7 +220,7 @@ void StockList::updateStock(int index, int option)
 		stocks[index].setQuantity(int_input);
 		break;
 
-	case 7: cout << "Enter new date: ";
+	case 7: cout << "Enter new date(DD-Mmm-YY): ";
 		cin.clear();
 		cin.ignore(10000, '\n');
 		getline(cin, input);

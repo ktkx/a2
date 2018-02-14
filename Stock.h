@@ -36,7 +36,7 @@ class Stock {
 		void setDate(Date);	   	   
 
 		void displayStock();
-		string dateToString(Date);
+		static string dateToString(Date);
 		
 		//sort
 		static bool compareDescription(Stock&, Stock&);

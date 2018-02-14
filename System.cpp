@@ -134,16 +134,16 @@ void System::displayMainMenu() {
 }
 
 void System::displayAddStockMenu() {
-	string itemID, itemDescription, itemCategory, itemSubCategory, month;
+	string itemID, itemDescription, itemCategory, itemSubCategory, month, date_input;
 	int amount, quantity, day, year;
+	char garbage;
 	Date date;
+	
 	cout << "Enter stock details: " << endl;
 	cout << endl;
-
+	
 	cout << "Item ID: ";
-	cin.clear();
-	cin.ignore(10000, '\n');
-	getline(cin, itemID);
+	cin >> itemID;
 
 	cout << "Item description: ";
 	cin.clear();
@@ -151,32 +151,27 @@ void System::displayAddStockMenu() {
 	getline(cin, itemDescription);
 
 	cout << "Item category: ";
-	cin.clear();
-	cin.ignore(10000, '\n');
-	getline(cin, itemDescription);
+	getline(cin, itemCategory);
 
 	cout << "Item sub category: ";
-	cin.clear();
-	cin.ignore(10000, '\n');
-	getline(cin, itemID);
+	getline(cin, itemSubCategory);
+
 
 	cout << "Item amount: ";
 	cin >> amount;
-	cout << "Item quantity";
+	cout << "Item quantity: ";
 	cin >> quantity;
-	cout << "Date day: ";
-	cin >> day;
-	cout << "Date month: ";
 
-	getline(cin, month);
+	cout << "Enter new date(DD-Mmm-YY): ";
 	cin.clear();
 	cin.ignore(10000, '\n');
-	cout << "Date year: ";
-	cin >> year;
+	getline(cin, date_input);
 
-	date.day = day;
-	date.month = month;
-	date.year = year;
+	istringstream linestream(date_input);
+
+	linestream >> date.day >> garbage;
+	getline(linestream, date.month, '-');
+	linestream >> date.year;
 
 	Stock s(itemID, itemDescription, itemCategory, itemSubCategory, amount, quantity, date);
 	listOfStock.addStock(s);
