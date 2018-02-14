@@ -130,8 +130,10 @@ string Stock::dateToString(Date date) {
 	return to_string(date.day) + "-" + date.month + "-" + to_string(date.year);
 }
 
-int monthToInt(string m)
+int Stock::monthToInt()
 {
+	string m = getDate().month;
+
 	if (m == "Jan")
 		return 1;
 	else if (m == "Feb")
@@ -156,4 +158,26 @@ int monthToInt(string m)
 		return 11;
 	else 
 		return 12;
+}
+
+void Stock::displayReport()
+{
+	cout << setw(15) << left << getID();
+
+	if (getQuantity() < 0)
+	{
+		cout << setw(10) << left << "0"
+			<< setw(10) << left << getQuantity() * (-1);
+	}
+	else
+	{
+		cout << setw(10) << left << getQuantity()
+			<< setw(10) << left << "0";
+	}
+
+	cout << setw(20) << left << getAmount();
+
+	cout.imbue(locale(""));
+	cout << setw(20) << left << getQuantity() * getAmount() * (-1) << endl;
+	cout.imbue(locale(locale("C")));
 }

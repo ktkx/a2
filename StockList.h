@@ -1,4 +1,5 @@
 // StockList.h
+#pragma warning(disable : 4996)
 #pragma once
 #include "Stock.h"
 #include <vector>
@@ -8,6 +9,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <ctime> 
+
 using namespace std;
 
 class StockList {
@@ -25,7 +28,7 @@ class StockList {
 
 		void search(int, vector<Stock>&);
 		void sort_results(int, vector<Stock>&, bool);
-		//void printReport(int);
+		void printReport(int);
 
 		// edit
 		void addStock(Stock);

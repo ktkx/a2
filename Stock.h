@@ -2,6 +2,8 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <iomanip>
+#include <locale>
 using namespace std;
 
 struct Date
@@ -37,7 +39,11 @@ class Stock {
 
 		void displayStock();
 		static string dateToString(Date);
-		static int monthToInt(string);
+
+		int monthToInt();
+		void displayReport();
+
+
 		//sort
 		static bool compareDescription(Stock&, Stock&);
 		static bool compareQuantity( Stock&,  Stock&);

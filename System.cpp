@@ -136,7 +136,7 @@ void System::displayMainMenu() {
 		cout << "2. Remove stock" << endl;
 		cout << "3. Search stock" << endl;
 		cout << "4. Update stock" << endl;
-		cout << "5. Print report (NOT DONE)" << endl;
+		cout << "5. Print report" << endl;
 		cout << "6. Stock alerts" << endl;
 		cout << "7. Log Out" << endl << endl;
 
@@ -321,7 +321,7 @@ void System::displayPrintReportMenu() {
 		<< setw(20) << left << "Amount(Per Unit)"
 		<< setw(20) << left << "Total Amount" << endl << endl;
 
-	//listOfStock.printReport(option);
+	listOfStock.printReport(option);
 }
 
 void System::displayStockAlertMenu() {

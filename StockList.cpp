@@ -336,23 +336,50 @@ string StockList::decryptData(string toDecrypt) {
 	return output;
 }
 
-//void printReport(int option)
-//{
-	//time_t now = time(0);
-	//char* dt = ctime(&now);
+void StockList::printReport(int option)
+{
+	time_t rawtime = time(NULL);
+	struct tm * timeinfo = localtime(&rawtime);
 
-	/*switch (option)
+	int day = timeinfo->tm_mday;
+	int month = timeinfo->tm_mon + 1;
+	int year = timeinfo->tm_year + 1900;
+
+	year = 2014;
+
+	switch (option)
 	{
 	case 1:
-		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
-
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it)
+		{
+			if ((year == (*it).getDate().year + 2000 && month == (*it).monthToInt()) && day == (*it).getDate().day)
+				(*it).displayReport();
 		}
 		break;
 	case 2:
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it)
+		{
+			if ((year == (*it).getDate().year + 2000 && month == (*it).monthToInt() && day - 7 <= (*it).getDate().day && day >= (*it).getDate().day) ||
+				(year == (*it).getDate().year + 2000 && month-1 == (*it).monthToInt() && day+23 <= (*it).getDate().day && day <= 7) ||
+				(year-1 == (*it).getDate().year + 2000 && month+11 == (*it).monthToInt() && day+23 <= (*it).getDate().day && day <= 7 && month <= 1))
+				(*it).displayReport();
+		}
 		break;
 	case 3:
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it)
+		{
+			if ((year == (*it).getDate().year + 2000 && month == (*it).monthToInt() && day >= (*it).getDate().day) ||
+				(year == (*it).getDate().year + 2000 && month-1 == (*it).monthToInt() && day <= (*it).getDate().day) ||
+				(year - 1 == (*it).getDate().year + 2000 && month+11 <= (*it).monthToInt() && day <= (*it).getDate().day) && month <=1)
+				(*it).displayReport();
+		}
 		break;
 	case 4:
+		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it)
+		{
+			if (year == (*it).getDate().year + 2000 || (year - 1 == (*it).getDate().year + 2000 && month <= (*it).monthToInt()))
+				(*it).displayReport();
+		}
 		break;
-	}*/
-//}
+	}
+}
