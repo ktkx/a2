@@ -345,8 +345,6 @@ void StockList::printReport(int option)
 	int month = timeinfo->tm_mon + 1;
 	int year = timeinfo->tm_year + 1900;
 
-	year = 2014;
-
 	switch (option)
 	{
 	case 1:
