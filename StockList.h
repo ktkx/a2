@@ -26,9 +26,9 @@ class StockList {
 		int getIndex(string);
 		vector<Stock> findAll(string);
 
-		void search(int, vector<Stock>&);
-		void sort_results(int, vector<Stock>&, bool);
-		void printReport(int);
+		void search(char, vector<Stock>&);
+		void sort_results(char, vector<Stock>&, bool);
+		void printReport(char);
 
 		// edit
 		void addStock(Stock);
@@ -39,7 +39,6 @@ class StockList {
 		
 	private:
 		vector<Stock> stocks;
-		//string key = "mywillmadereal";
 
 };
 

@@ -2,19 +2,13 @@
 
 #include "System.h"
 
-// for testing
-/*
-for (vector<Stock>::iterator it = listOfStock.stocks.begin(); it != listOfStock.stocks.begin()+10; ++it) {
-(*it).displayStock();
-}
-*/
-
 System::System() {
 	
 }
 
 void System::displayMenu() {
-	int i = 0;
+	char i;
+	//Loop menu until user enters 3
 	do
 	{
 		cout << "1. Login" << endl;
@@ -23,19 +17,22 @@ void System::displayMenu() {
 
 		cout << "Please choose your option : ";
 		cin >> i;
+		cout << endl;
 
 		switch (i)
 		{
 
-		case 1: displayLogin();
+		case '1': displayLogin(); //Login option
 			break;
-		case 2: handleLockedAccount();
+		case '2': handleLockedAccount(); //Handle Locked Account
 			break;
-		case 3: exit(-1);
+		case '3': exit(-1); //Quit
 			break;
-		default: cout << "Please enter the correct option!" << endl;
+		default: cout << "Please enter the correct option!" << endl; //If not entered 1, 2 or 3
+
 		}
-	} while (i != 3);
+	} while (i != '3');
+	cout << endl;
 }
 
 void System::displayLogin() {
@@ -44,7 +41,7 @@ void System::displayLogin() {
 	int loginTry = 0;
 	ifstream afile;
 	
-
+	//Loop until user login successfully OR user fails to login 3 times
 	do
 	{
 		cout << "Enter Valid Username: ";
@@ -55,22 +52,24 @@ void System::displayLogin() {
 
 		if (checkLockedAccount(userId) == false)
 		{
-			bool valid = listOfUser.validateUser(userId, userPass);
-
+			bool valid = listOfUser.validateUser(userId, userPass); //Validate account information
+			//If login successful, show main menu
 			if (valid == true)
 			{
 				displayMainMenu();
 			}
-			else
+			else //If unsuccessful, increase loginTry by 1
 			{
+				cout << endl;
 				displayFail();
+				cout << endl;
 				loginTry++;
 			}
-
+			//If user failed login 3 times,
 			if (loginTry == 3)
 			{
 				displayLock();
-				lockAccount(userId);
+				lockAccount(userId); //Lock account
 			}
 		}//if checkLockAcc
 		else
@@ -117,7 +116,6 @@ void System::unlockAccount(string id)
 
 void System::handleLockedAccount()
 {
-	//UserList ul;
 	string userId, reason;
 	cout << "Enter Locked Username: ";
 	cin >> userId;
@@ -127,10 +125,12 @@ void System::handleLockedAccount()
 
 
 void System::displayMainMenu() {
-	int option = 0;
+	char option;
+	//Loop menu until user enters 7 (quit)
 	do
 	{
-		option = 0;
+		option = '0';
+		cout << endl;
 		cout << "Warehouse Management Tool" << endl << endl;
 		cout << "1. Add stock" << endl;
 		cout << "2. Remove stock" << endl;
@@ -145,24 +145,23 @@ void System::displayMainMenu() {
 		
 		switch (option)
 		{
-		case 1: displayAddStockMenu();
+		case '1': displayAddStockMenu();
 			break;
-		case 2: displayRemoveStockMenu();
+		case '2': displayRemoveStockMenu();
 			break;
-		case 3: displaySearchMenu();
+		case '3': displaySearchMenu();
 			break;
-		case 4: displayUpdateStockMenu();
+		case '4': displayUpdateStockMenu();
 			break;
-		case 5: displayPrintReportMenu();
+		case '5': displayPrintReportMenu();
 			break;
-		case 6: displayStockAlertMenu();
+		case '6': displayStockAlertMenu();
 			break;
-		case 7: cout << "Logging out..." << endl << endl;
-			//sleep(1);			// ?_?
-			listOfStock.toFile();
-			displayMenu();
+		case '7': cout << "Logging out..." << endl << endl;
+			listOfStock.toFile(); //Encrypt stock records
+			displayMenu(); //Back to login menu
 			break;
-		default: cout << "Incorrect option, please enter option 1 to 6" << endl;
+		default: cout << "Incorrect option, please enter option 1 to 7" << endl;
 			break;
 		}
 
@@ -170,12 +169,14 @@ void System::displayMainMenu() {
 	} while (option != 7);
 }
 
+//Add new stock
 void System::displayAddStockMenu() {
 	string itemID, itemDescription, itemCategory, itemSubCategory, month, date_input;
 	int amount, quantity, day, year;
 	char garbage;
 	Date date;
-	
+
+	//Get stock details from user
 	cout << "Enter stock details: " << endl;
 	cout << endl;
 	
@@ -193,7 +194,6 @@ void System::displayAddStockMenu() {
 	cout << "Item sub category: ";
 	getline(cin, itemSubCategory);
 
-
 	cout << "Item amount: ";
 	cin >> amount;
 	cout << "Item quantity: ";
@@ -204,34 +204,42 @@ void System::displayAddStockMenu() {
 	cin.ignore(10000, '\n');
 	getline(cin, date_input);
 
+	//Put string date_input into Date structure
 	istringstream linestream(date_input);
 
 	linestream >> date.day >> garbage;
 	getline(linestream, date.month, '-');
 	linestream >> date.year;
 
+	//Add new stock
 	Stock s(itemID, itemDescription, itemCategory, itemSubCategory, amount, quantity, date);
 	listOfStock.addStock(s);
+
+	cout << "New stock succesfully added!" << endl;
 }
 
+//Remove stock
 void System::displayRemoveStockMenu() {
 	string itemID;
 	int option, count = 1;
+	//Get stock ID
 	cout << "Enter Item ID: ";
 	cin.clear();
 	cin.ignore(10000, '\n');
 	getline(cin, itemID);
+
+	//Find stock to remove
 	if (listOfStock.stockExists(itemID) == true) {
-		//vector<Stock> results = listOfStock.findAll(itemID);
-		listOfStock.removeStock(itemID);
+		listOfStock.removeStock(itemID); //Remove stock
 	}
 	else {
-		cout << "Item not found!" << endl;
+		cout << "Item not found!" << endl; //If stock does not exist, print message
 	}
 }
 
+//Search stock
 void System::displaySearchMenu() {
-	int option = 0, sort = 0;
+	char option = '0', sort = '0';
 	bool ascending;
 	string category;
 	vector<Stock> search_results;
@@ -256,9 +264,9 @@ void System::displaySearchMenu() {
 			cout << "2. Descending" << endl << endl;
 			cout << "Please enter your option : ";
 			cin >> sort;
-		} while (sort != 1 && sort != 2);
+		} while (sort != '1' && sort != '2');
 
-		if (sort == 1)
+		if (sort == '1')
 			ascending = true;
 		else
 			ascending = false;
@@ -275,60 +283,56 @@ void System::displaySearchMenu() {
 		cout << "No records found!" << endl;
 	}
 	
-
 	cout << endl;
 }
 
+//Update stock
 void System::displayUpdateStockMenu() {
 
 	string itemID;
 	int int_input;
+	//Get stock ID to update
 	cout << "Enter Item ID: ";
 	cin.clear();
 	cin.ignore(10000, '\n');
 	getline(cin, itemID);
+
+	//if the stock exists,
 	if (listOfStock.stockExists(itemID) == true) {
 		int option = 0, index = 0;
 		index = listOfStock.getIndex(itemID);
-		//vector<Stock> results = listOfStock.findAll(itemID);
+		listOfStock.updateStock(itemID); //Update stock information
 
-		listOfStock.updateStock(itemID);
-
-		cout << endl << "Stock updated." << endl << endl;
-
+		cout << endl << "Stock updated" << endl << endl;
 	}
 	else {
-		cout << "Item not found!" << endl;
+		cout << "Item not found!" << endl; //If does not exist, print message
 	}
 }
 
+//Print report
 void System::displayPrintReportMenu() {
-	// to do
-	int option;
-
-	cout << "1) Daily stock summary report" << endl
-		<< "2) Weekly stock summary report" << endl
-		<< "3) Monthly stock summary report" << endl
-		<< "4) Yearly stock summary report" << endl << endl;
+	char option;
+	//Print stock menu
+	cout << "1. Daily stock summary report" << endl
+		<< "2. Weekly stock summary report" << endl
+		<< "3. Monthly stock summary report" << endl
+		<< "4. Yearly stock summary report" << endl << endl;
 
 	cout << "Select report type: ";
 	cin >> option;
 
-	cout << endl
-		<< setw(15) << left << "Stock item"
-		<< setw(10) << left << "In"
-		<< setw(10) << left << "Out"
-		<< setw(20) << left << "Amount(Per Unit)"
-		<< setw(20) << left << "Total Amount" << endl << endl;
-
-	listOfStock.printReport(option);
+	listOfStock.printReport(option); //Print report
 }
 
+//Stock alert
 void System::displayStockAlertMenu() {
 	int amount;
+
+	//Get threshold amount
 	cout << "Enter threshold amount: ";
 	cin >> amount;
-	listOfStock.provideStockAlerts(amount);
+	listOfStock.provideStockAlerts(amount); //Provide alert
 }
 
 

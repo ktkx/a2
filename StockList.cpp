@@ -1,13 +1,14 @@
 //StockList.cpp
 #include "StockList.h"
 
+//StockList constructor
 StockList::StockList()
 {
 	ifstream inFile;
 	bool decrypt = false;
 
-	inFile.open("output.txt");
-
+	inFile.open("encrypted.txt");
+	//If encrypted file does not exist, read SampleData.txt
 	if (!inFile)
 	{
 		inFile.open("SampleData.txt");
@@ -18,7 +19,7 @@ StockList::StockList()
 		}
 	}
 	else
-		decrypt = true;
+		decrypt = true; //If encrypted file exists, decrypt and read it
 
 	string line;
 	string itemID, itemDescription, itemCategory, itemSubCategory;
@@ -26,12 +27,15 @@ StockList::StockList()
 	int amount, quantity;
 	char garbage;
 
+	//Read text file
 	while (getline(inFile, line)) {
+		//If text file needs to be decrypted, decrypt it first
 		if (decrypt)
 			line = decryptData(line);
 		
 		istringstream linestream(line);
 
+		//File to array
 		getline(linestream, itemID, ':');
 		getline(linestream, itemDescription, ':');
 		getline(linestream, itemCategory, ':');
@@ -47,11 +51,13 @@ StockList::StockList()
 	}
 }
 
+//Add stock to the stock list
 void StockList::addStock (Stock st)
 {
 	stocks.push_back(st);
 }
 
+//Provide stock alert
 void StockList::provideStockAlerts(int amt) //amt = threshold set
 {
 	int count = 0;
@@ -70,6 +76,7 @@ void StockList::provideStockAlerts(int amt) //amt = threshold set
 	}
 }
 
+//Check if the stock with same ID as user's input(string ID) exists
 bool StockList::stockExists(string ID) {
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
 		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
@@ -79,6 +86,7 @@ bool StockList::stockExists(string ID) {
 	return false;
 }
 
+//Get index of the stock in the list
 int StockList::getIndex(string ID) {
 	int index = 0;
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, ++index) {
@@ -88,6 +96,7 @@ int StockList::getIndex(string ID) {
 	}
 }
 
+//Find all stocks with stock ID same as 'string ID'
 vector<Stock> StockList::findAll(string ID) {
 	vector<Stock> results;
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
@@ -98,38 +107,37 @@ vector<Stock> StockList::findAll(string ID) {
 	return results;
 }
 
-void StockList::search(int option, vector<Stock>& search_results) {
+//Search for stock
+void StockList::search(char option, vector<Stock>& search_results) {
 	string input;
 	int range1, range2;
 	Date date;
-
+	
 	switch (option)
 	{
-	case 1: cout << "Enter category: ";
+	case '1': cout << "Enter category: ";
 		cin.clear();
 		cin.ignore(10000, '\n');
 		getline(cin, input);
 
 		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
 			if (strcmp(((*it).getCat()).c_str(), input.c_str()) == 0) {
-				//(*it).displayStock();
 				search_results.push_back(*it);
 			}
 		}
 		break;
-	case 2: cout << "Enter sub category";
+	case '2': cout << "Enter sub category";
 		cin.clear();
 		cin.ignore(10000, '\n');
 		getline(cin, input);
 
 		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
 			if (strcmp(((*it).getSubCat()).c_str(), input.c_str()) == 0) {
-				//(*it).displayStock();
 				search_results.push_back(*it);
 			}
 		}
 		break;
-	case 3: cout << "Enter price range (e.g. 10 20): ";
+	case '3': cout << "Enter price range (e.g. 10 20): ";
 		cin >> range1 >> range2;
 		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
 			if ((*it).getAmount() >= range1 && (*it).getAmount() <= range2) {
@@ -138,7 +146,7 @@ void StockList::search(int option, vector<Stock>& search_results) {
 		}
 		break;
 
-	case 4: cout << "Enter quantity range (e.g. 1000 2000): ";
+	case '4': cout << "Enter quantity range (e.g. 1000 2000): ";
 		cin >> range1 >> range2;
 		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
 			if ((*it).getQuantity() >= range1 && (*it).getQuantity() <= range2) {
@@ -146,19 +154,24 @@ void StockList::search(int option, vector<Stock>& search_results) {
 			}
 		}
 		break;
+	default: cout << "Please enter input between 1-4" << endl;
+		break;
 	}
 }
 
-void StockList::sort_results(int option, vector<Stock>& search_results, bool ascending) {
+//Sort stock
+void StockList::sort_results(char option, vector<Stock>& search_results, bool ascending) {
 	switch (option)
 	{
-	case 1: sort(search_results.begin(), search_results.end(), Stock::compareDescription);
+	case '1': sort(search_results.begin(), search_results.end(), Stock::compareDescription);
 		break;
-	case 2: sort(search_results.begin(), search_results.end(), Stock::compareDescription);
+	case '2': sort(search_results.begin(), search_results.end(), Stock::compareDescription);
 		break;
-	case 3: sort(search_results.begin(), search_results.end(), Stock::comparePrice);
+	case '3': sort(search_results.begin(), search_results.end(), Stock::comparePrice);
 		break;
-	case 4: sort(search_results.begin(), search_results.end(), Stock::compareQuantity);
+	case '4': sort(search_results.begin(), search_results.end(), Stock::compareQuantity);
+		break;
+	default: cout << "Please enter input between 1-4" << endl;
 		break;
 	}
 	if (!ascending) {
@@ -167,15 +180,18 @@ void StockList::sort_results(int option, vector<Stock>& search_results, bool asc
 		
 }
 
+//Update stock
 void StockList::updateStock(string ID)
 {
 	string input;
 	int index = 0;
-	int int_input, option;
+	int int_input;
+	char option;
 	Date new_date;
 	char garbage;
 	istringstream linestream(input);
 
+	//Display stock list with ID same as user's input
 	cout << "Displaying all matching records: " << endl;
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, index++) {
 		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
@@ -199,47 +215,48 @@ void StockList::updateStock(string ID)
 	cout << "Please enter your option : ";
 	cin >> option;
 
+	//Update stock details
 	switch (option)
 	{
-	case 1: cout << "Enter new ID: ";		// validation required
+	case '1': cout << "Enter new ID: ";		
 		cin.clear();
 		cin.ignore(10000, '\n');
 		getline(cin, input);
 		stocks[index].setID(input);
 		break;
 
-	case 2: cout << "Enter new description: ";
+	case '2': cout << "Enter new description: ";
 		cin.clear();
 		cin.ignore(10000, '\n');
 		getline(cin, input);
 		stocks[index].setDesc(input);
 		break;
 
-	case 3: cout << "Enter new category: ";
+	case '3': cout << "Enter new category: ";
 		cin.clear();
 		cin.ignore(10000, '\n');
 		getline(cin, input);
 		stocks[index].setCat(input);
 		break;
 
-	case 4: cout << "Enter new sub category: ";
+	case '4': cout << "Enter new sub category: ";
 		cin.clear();
 		cin.ignore(10000, '\n');
 		getline(cin, input);
 		stocks[index].setSubCat(input);
 		break;
 
-	case 5: cout << "Enter new amount: ";
+	case '5': cout << "Enter new amount: ";
 		cin >> int_input;
 		stocks[index].setAmount(int_input);
 		break;
 
-	case 6: cout << "Enter new quantity: ";
+	case '6': cout << "Enter new quantity: ";
 		cin >> int_input;
 		stocks[index].setQuantity(int_input);
 		break;
 
-	case 7: cout << "Enter new date(DD-Mmm-YY): ";
+	case '7': cout << "Enter new date(DD-Mmm-YY): ";
 		cin.clear();
 		cin.ignore(10000, '\n');
 		getline(cin, input);
@@ -257,10 +274,11 @@ void StockList::updateStock(string ID)
 	}
 }
 
+//Remove stock
 void StockList::removeStock(string ID)
 {
 	int index = 0, option = 0;
-	
+	//Display stock list with ID same as user's input
 	cout << "Displaying all matching records: " << endl;
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, index++) {
 		if (strcmp(((*it).getID()).c_str(), ID.c_str()) == 0) {
@@ -271,23 +289,17 @@ void StockList::removeStock(string ID)
 	cout << endl;
 	cout << "Select a record to delete: ";
 	cin >> option;
-
+	//Remove stock
 	stocks.erase(stocks.begin() + option);
 	cout << endl;
 	cout << "Record " << option << " successfully deleted!" << endl;
 
-	/*
-
-	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it, ++index) {
-		if (itemID == (*it).getID()) {
-			stocks.erase(it);
-		}
-	}*/
 }
 
+//Output text file
 void StockList::toFile() {
 	ofstream outFile;
-	outFile.open("output.txt");
+	outFile.open("encrypted.txt");
 	string line;
 	 
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {
@@ -299,25 +311,12 @@ void StockList::toFile() {
 
 		outFile << line << '\n';
 
-		/*
-		outFile << encryptData((*it).getID()) << ":"
-			<< encryptData((*it).getDesc()) << ":"
-			<< encryptData((*it).getCat()) << ":"
-			<< encryptData((*it).getSubCat()) << ":"
-			<< encryptData(to_string((*it).getAmount())) << ":"
-			<< encryptData(to_string((*it).getQuantity())) << ":"
-			<< encryptData((*it).dateToString((*it).getDate()))
-			<< "\n";*/
 	}
 	outFile.close();
 }
 
+//Encrypt stock data
 string StockList::encryptData(string toEncrypt) {
-	/*while (key.size() < input.size())
-		key += input;
-	for (int i = 0; i < input.size(); ++i)
-		input[i] ^= key[i];
-	return input;*/
 
 	string output = toEncrypt;
 
@@ -327,6 +326,7 @@ string StockList::encryptData(string toEncrypt) {
 	return output;
 }
 
+//Decrypt stock data
 string StockList::decryptData(string toDecrypt) {
 	string output = toDecrypt;
 
@@ -336,48 +336,106 @@ string StockList::decryptData(string toDecrypt) {
 	return output;
 }
 
-void StockList::printReport(int option)
+//Print report
+void StockList::printReport(char option)
 {
+	int count = 0;
 	time_t rawtime = time(NULL);
 	struct tm * timeinfo = localtime(&rawtime);
+	vector<Stock> tempStock;
 
 	int day = timeinfo->tm_mday;
 	int month = timeinfo->tm_mon + 1;
 	int year = timeinfo->tm_year + 1900;
 
+	//Display stock record according to the user's option
 	switch (option)
 	{
-	case 1:
+	case '1':
 		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it)
 		{
-			if ((year == (*it).getDate().year + 2000 && month == (*it).monthToInt()) && day == (*it).getDate().day)
+
+			if ((year == (*it).getDate().year + 2000 && month == (*it).monthToInt()) && day == (*it).getDate().day) {
+				
+				count++;
+				if (count == 1) {
+					cout << endl
+						<< setw(15) << left << "Stock item"
+						<< setw(10) << left << "In"
+						<< setw(10) << left << "Out"
+						<< setw(20) << left << "Amount(Per Unit)"
+						<< setw(20) << left << "Total Amount" << endl << endl;
+				}
 				(*it).displayReport();
+			}
 		}
 		break;
-	case 2:
+	case '2':
 		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it)
 		{
 			if ((year == (*it).getDate().year + 2000 && month == (*it).monthToInt() && day - 7 <= (*it).getDate().day && day >= (*it).getDate().day) ||
-				(year == (*it).getDate().year + 2000 && month-1 == (*it).monthToInt() && day+23 <= (*it).getDate().day && day <= 7) ||
-				(year-1 == (*it).getDate().year + 2000 && month+11 == (*it).monthToInt() && day+23 <= (*it).getDate().day && day <= 7 && month <= 1))
+				(year == (*it).getDate().year + 2000 && month - 1 == (*it).monthToInt() && day + 23 <= (*it).getDate().day && day <= 7) ||
+				(year - 1 == (*it).getDate().year + 2000 && month + 11 == (*it).monthToInt() && day + 23 <= (*it).getDate().day && day <= 7 && month <= 1))
+			{
+				
+				count++;
+				if (count == 1) {
+					cout << endl
+						<< setw(15) << left << "Stock item"
+						<< setw(10) << left << "In"
+						<< setw(10) << left << "Out"
+						<< setw(20) << left << "Amount(Per Unit)"
+						<< setw(20) << left << "Total Amount" << endl << endl;
+				}
 				(*it).displayReport();
+			}
 		}
 		break;
-	case 3:
+	case '3':
 		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it)
 		{
 			if ((year == (*it).getDate().year + 2000 && month == (*it).monthToInt() && day >= (*it).getDate().day) ||
-				(year == (*it).getDate().year + 2000 && month-1 == (*it).monthToInt() && day <= (*it).getDate().day) ||
-				(year - 1 == (*it).getDate().year + 2000 && month+11 <= (*it).monthToInt() && day <= (*it).getDate().day) && month <=1)
+				(year == (*it).getDate().year + 2000 && month - 1 == (*it).monthToInt() && day <= (*it).getDate().day) ||
+				(year - 1 == (*it).getDate().year + 2000 && month + 11 <= (*it).monthToInt() && day <= (*it).getDate().day) && month <= 1)
+			{
+				
+				count++;
+				if (count == 1) {
+					cout << endl
+						<< setw(15) << left << "Stock item"
+						<< setw(10) << left << "In"
+						<< setw(10) << left << "Out"
+						<< setw(20) << left << "Amount(Per Unit)"
+						<< setw(20) << left << "Total Amount" << endl << endl;
+				}
 				(*it).displayReport();
+			}
+				
 		}
 		break;
-	case 4:
+	case '4':
 		for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it)
 		{
 			if (year == (*it).getDate().year + 2000 || (year - 1 == (*it).getDate().year + 2000 && month <= (*it).monthToInt()))
+			{
+				count++;
+				if (count == 1) {
+					cout << endl
+						<< setw(15) << left << "Stock item"
+						<< setw(10) << left << "In"
+						<< setw(10) << left << "Out"
+						<< setw(20) << left << "Amount(Per Unit)"
+						<< setw(20) << left << "Total Amount" << endl << endl;
+				}
 				(*it).displayReport();
+			}
 		}
 		break;
+	default: cout << "Please enter input between 1-4" << endl;
+		break;
+	}
+	//If stock does not exist, display message
+	if (count == 0) {
+		cout << "No records found!" << endl;
 	}
 }
