@@ -7,11 +7,11 @@ StockList::StockList()
 	ifstream inFile;
 	bool decrypt = false;
 
-	inFile.open("encrypted.txt");
+	inFile.open("./A2_DATA/encrypted.txt");
 	//If encrypted file does not exist, read SampleData.txt
 	if (!inFile)
 	{
-		inFile.open("SampleData.txt");
+		inFile.open("./A2_DATA/SampleData.txt");
 
 		if (!inFile) {
 			cerr << "Unable to open file";
@@ -299,7 +299,7 @@ void StockList::removeStock(string ID)
 //Output text file
 void StockList::toFile() {
 	ofstream outFile;
-	outFile.open("encrypted.txt");
+	outFile.open("./A2_DATA/encrypted.txt");
 	string line;
 	 
 	for (vector<Stock>::iterator it = stocks.begin(); it != stocks.end(); ++it) {

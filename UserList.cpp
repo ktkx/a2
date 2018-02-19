@@ -7,7 +7,7 @@ UserList::UserList()
 	//read in from text file
 	//if not valid, exits 
 	fstream afile;
-	afile.open("login.txt",ios::in);
+	afile.open("./A2_DATA/login.txt",ios::in);
 	if (!afile)
 	{
 		cout << "Error reading file!" << endl;
@@ -15,7 +15,6 @@ UserList::UserList()
 	}
 	
 	int i = 0; 
-	//User u;
 	string user;
 	string pass;
 	while (!afile.eof())
